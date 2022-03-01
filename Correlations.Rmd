@@ -1,7 +1,7 @@
 ---
 title: "Correlations"
 author: "Ange Olson"
-date: "`r Sys.Date()`"`
+date: "`r Sys.Date()`"
 output: html_document
 ---
 
@@ -17,31 +17,50 @@ options(scientific=T, digits = 3)
 ```
 
 
-```{r}
+```{r, echo = F}
 # read in dataset
 airbnb <- read.csv("NYC ABS.csv", header = TRUE)
+
+# subset rows for correlation and cast as numeric
+airbnb_cor <- airbnb[ , c(10, 11, 12, 14, 15, 16)]
+airbnb_cor[ , ] <- lapply(airbnb_cor[ , ], as.numeric)
 ```
 
-## Correlation Between Price (Y) and Availability (X)
+## Correlation Matrix for Airbnb Data
+```{r, results = "markup"}
+cor(airbnb_cor)
+```
+
+No strong correlations with price, but `minimum_nights` and `availability_365`, `number_of_reviews` and `availability_365`, and `calculated_host_listings_count` and `availability_365` show some evidence of positive correlation. 
+
+## Correlation Between Reviews per Month and Total Reviews
+
+```{r, results = "markup"}
+plot(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews)
+cor.test(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews)
+```
+
+As expected, correlated since reivews per month is a function of total number of reviews so do not need to look at both.
+
+
+## Basic Scatter Plots for Correlated Variables
 
 ```{r}
-plot(x=airbnb$availability_365, y=airbnb$price)
-cor.test(x=airbnb$availability_365, y=airbnb$price)
+plot(x=airbnb_cor$availability_365, y=airbnb_cor$minimum_nights)
+plot(x=airbnb_cor$availability_365, y=airbnb_cor$number_of_reviews)
+plot(x=airbnb_cor$availability_365, y=airbnb_cor$calculated_host_listings_count)
 ```
+
+
 
 ## Correlation Between Number of Reviews (Y) and Price (X) 
 
-```{r}
+```{r, results = "markup"}
 plot(y=airbnb$number_of_reviews, x=airbnb$price)
 cor.test(y=airbnb$number_of_reviews, x=airbnb$price)
 ```
 
-
-```{r}
-
-```
-
-
+No evidence of strong (linear) correlation, but evidence of an inverse relationship between price and reviews (higher price, fewer reviews--possibly because of fewer stays, for which review number is probably a good proxy)
 
 
 
