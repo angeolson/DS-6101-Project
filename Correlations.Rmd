@@ -62,7 +62,10 @@ cor.test(y=airbnb$number_of_reviews, x=airbnb$price)
 
 No evidence of strong (linear) correlation, but evidence of an inverse relationship between price and reviews (higher price, fewer reviews--possibly because of fewer stays, for which review number is probably a good proxy)
 
-
+```{r, results = "markup"}
+library(ggplot2)
+ggplot(airbnb, aes(x=price, y= number_of_reviews)) + geom_point()
+```
 
 
 
