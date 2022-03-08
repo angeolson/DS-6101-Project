@@ -18,6 +18,7 @@ options(scientific=T, digits = 3)
 ```{r, echo = F}
 # read in dataset
 airbnb <- read.csv("NYC ABS.csv", header = TRUE)
+airbnb_df <- data.frame(airbnb)
 
 ```
 
@@ -27,5 +28,23 @@ print(ttest_price_80)
 
 ttest_price_99 = t.test(x=airbnb$price, conf.level=0.99 )
 print(ttest_price_99)
+
+```
+
+
+
+```{r aov}
+
+anova_price_group = aov(price ~ neighbourhood_group, data=airbnb_df)
+
+anova_price_group
+xkabledply(anova_price_group, title = "ANOVA result summary for Neighborhood Groups")
+
+
+anova_price_neig = aov(price ~ neighbourhood, data=airbnb_df)
+
+anova_price_neig
+xkabledply(anova_price_neig, title = "ANOVA result summary for Neighborhoods")
+
 
 ```
