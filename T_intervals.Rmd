@@ -34,17 +34,19 @@ print(ttest_price_99)
 
 
 ```{r aov}
-
+#anova test for price and neighborhood groups
 anova_price_group = aov(price ~ neighbourhood_group, data=airbnb_df)
-
 anova_price_group
 xkabledply(anova_price_group, title = "ANOVA result summary for Neighborhood Groups")
 
-
+#anova test for price and neighborhoods
 anova_price_neig = aov(price ~ neighbourhood, data=airbnb_df)
-
 anova_price_neig
 xkabledply(anova_price_neig, title = "ANOVA result summary for Neighborhoods")
 
+#anova test for price and room type
+anova_price_room = aov(price ~ room_type, data=airbnb_df)
+anova_price_room
+xkabledply(anova_price_room, title = "ANOVA result summary for Room Type")
 
 ```
