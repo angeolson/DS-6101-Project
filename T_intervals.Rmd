@@ -8,6 +8,7 @@ output: html_document
 # some of common options (and the defaults) are: 
 # include=T, eval=T, echo=T, results='hide'/'asis'/'markup',..., collapse=F, warning=T, message=T, error=T, cache=T, fig.width=6, fig.height=4, fig.dim=c(6,4) #inches, fig.align='left'/'center','right', 
 # knitr::opts_chunk$set(warning = F, results = "markup", message = F)
+library(ezids)
 knitr::opts_chunk$set(warning = F, results = "hide", message = F)
 options(scientific=T, digits = 3) 
 # options(scipen=9, digits = 3) 
