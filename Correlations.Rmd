@@ -50,8 +50,22 @@ plot(x=airbnb_cor$availability_365, y=airbnb_cor$minimum_nights)
 plot(x=airbnb_cor$availability_365, y=airbnb_cor$number_of_reviews)
 plot(x=airbnb_cor$availability_365, y=airbnb_cor$calculated_host_listings_count)
 ```
+```{r, results = "markup"}
+library(ggplot2)
+ggplot(airbnb, aes(x=availability_365, y=minimum_nights)) + ggtitle("Minimum nights vs Availability Scatter plot") + xlab("Availability") + ylab("# Minimum nights") + geom_point(size = 1, shape = 18, color = "black") + ylim(0,400) + stat_cor(method = "pearson", label.x = 275) + geom_smooth(method = lm, se = FALSE, color = "yellow", size = 1.2) + theme_bw()
+cor.test(airbnb$availability_365, airbnb$minimum_nights)
+```
 
-
+```{r}
+ggplot(airbnb, aes(x=availability_365, y=number_of_reviews)) + ggtitle("Number of reviews vs Availability") + xlab("Availability") + ylab("# Reviews")  + geom_point(size = 1, shape = 18, color = "black") + ylim(0,800) + stat_cor(method = "pearson", label.x = 275) + geom_smooth(method = lm, se = FALSE, color = "yellow", size = 1.2) + theme_bw()
+cor.test(airbnb$availability_365, airbnb$number_of_reviews)
+```
+```{r}
+library(ggplot2)
+library(ggpubr)
+ggplot(airbnb, aes(x=availability_365, y=calculated_host_listings_count)) + ggtitle("# Host listings vs Availability") + xlab("Availability") + ylab("Host listings") + geom_point(size = 1, shape = 18, color = "black") + ylim(0,400) + stat_cor(method = "pearson", label.x = 275) + geom_smooth(method = lm, se = FALSE, color = "yellow", size = 1.2) + theme_bw()
+cor.test(airbnb$availability_365, airbnb$calculated_host_listings_count)
+```
 
 ## Correlation Between Number of Reviews (Y) and Price (X) 
 
@@ -60,15 +74,12 @@ plot(y=airbnb$number_of_reviews, x=airbnb$price)
 cor.test(y=airbnb$number_of_reviews, x=airbnb$price)
 ```
 
-No evidence of strong (linear) correlation, but evidence of an inverse relationship between price and reviews (higher price, fewer reviews--possibly because of fewer stays, for which review number is probably a good proxy)
-
 ```{r, results = "markup"}
 library(ggplot2)
-ggplot(airbnb, aes(x=price, y= number_of_reviews)) + geom_point()
+ggplot(airbnb, aes(x=price, y=number_of_reviews,)) + ggtitle("Number of Reviews vs Price Scatter Plot") + xlab("Price ($)") + ylab("Number Of Reviews") + geom_point(size = 1, shape = 18, color = "black") + geom_smooth(method = lm, se = FALSE, color = "yellow", size = 1.2) + theme_bw() + stat_cor(method =  "pearson", label.x = 7500 )
 ```
 
-
-
+No evidence of strong (linear) correlation, but evidence of an inverse relationship between price and reviews (higher price, fewer reviews--possibly because of fewer stays, for which review number is probably a good proxy)
 
 
 
