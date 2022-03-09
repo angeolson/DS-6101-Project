@@ -8,6 +8,7 @@ output: html_document
 # some of common options (and the defaults) are: 
 # include=T, eval=T, echo=T, results='hide'/'asis'/'markup',..., collapse=F, warning=T, message=T, error=T, cache=T, fig.width=6, fig.height=4, fig.dim=c(6,4) #inches, fig.align='left'/'center','right', 
 # knitr::opts_chunk$set(warning = F, results = "markup", message = F)
+library(ezids)
 knitr::opts_chunk$set(warning = F, results = "hide", message = F)
 options(scientific=T, digits = 3) 
 # options(scipen=9, digits = 3) 
@@ -19,6 +20,9 @@ options(scientific=T, digits = 3)
 # read in dataset
 airbnb <- read.csv("NYC ABS.csv", header = TRUE)
 airbnb_df <- data.frame(airbnb)
+airbnb_df$neighbourhood_group <- as.factor(airbnb_df$neighbourhood_group)
+airbnb_df$neighbourhood <- as.factor(airbnb_df$neighbourhood)
+airbnb_df$room_type <- as.factor(airbnb_df$room_type)
 
 ```
 
@@ -33,20 +37,29 @@ print(ttest_price_99)
 
 
 
-```{r aov}
+```{r aov, results='markup'}
 #anova test for price and neighborhood groups
 anova_price_group = aov(price ~ neighbourhood_group, data=airbnb_df)
 anova_price_group
-xkabledply(anova_price_group, title = "ANOVA result summary for Neighborhood Groups")
+summary(anova_price_group) -> sum_anova_price_group
+xkabledply(sum_anova_price_group, title = "ANOVA result summary for Neighborhood Groups")
+
+tukeyAoV_pg <- TukeyHSD(anova_price_group)
+tukeyAoV_pg
 
 #anova test for price and neighborhoods
 anova_price_neig = aov(price ~ neighbourhood, data=airbnb_df)
 anova_price_neig
-xkabledply(anova_price_neig, title = "ANOVA result summary for Neighborhoods")
+summary(anova_price_neig) -> sum_anova_price_neig
+xkabledply(sum_anova_price_neig, title = "ANOVA result summary for Neighborhoods")
 
 #anova test for price and room type
 anova_price_room = aov(price ~ room_type, data=airbnb_df)
 anova_price_room
-xkabledply(anova_price_room, title = "ANOVA result summary for Room Type")
+summary(anova_price_room) -> sum_anova_price_room
+xkabledply(sum_anova_price_room, title = "ANOVA result summary for Room Type")
+
+tukeyAoV_pr <- TukeyHSD(anova_price_room)
+tukeyAoV_pr
 
 ```

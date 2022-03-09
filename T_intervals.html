@@ -171,7 +171,46 @@ pre code {
 </div>
 
 
+<pre class="r"><code>ttest_price_80 = t.test(x=airbnb$price, conf.level=0.80 )
+print(ttest_price_80)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  airbnb$price
+## t = 141, df = 48894, p-value &lt;2e-16
+## alternative hypothesis: true mean is not equal to 0
+## 80 percent confidence interval:
+##  151 154
+## sample estimates:
+## mean of x 
+##       153</code></pre>
+<pre class="r"><code>ttest_price_99 = t.test(x=airbnb$price, conf.level=0.99 )
+print(ttest_price_99)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  airbnb$price
+## t = 141, df = 48894, p-value &lt;2e-16
+## alternative hypothesis: true mean is not equal to 0
+## 99 percent confidence interval:
+##  150 156
+## sample estimates:
+## mean of x 
+##       153</code></pre>
+<pre class="r"><code>#anova test for price and neighborhood groups
+anova_price_group = aov(price ~ neighbourhood_group, data=airbnb_df)
+anova_price_group
+xkabledply(anova_price_group, title = &quot;ANOVA result summary for Neighborhood Groups&quot;)
 
+#anova test for price and neighborhoods
+anova_price_neig = aov(price ~ neighbourhood, data=airbnb_df)
+anova_price_neig
+xkabledply(anova_price_neig, title = &quot;ANOVA result summary for Neighborhoods&quot;)
+
+#anova test for price and room type
+anova_price_room = aov(price ~ room_type, data=airbnb_df)
+anova_price_room
+xkabledply(anova_price_room, title = &quot;ANOVA result summary for Room Type&quot;)</code></pre>
 
 
 
