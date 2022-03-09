@@ -44,6 +44,9 @@ anova_price_group
 summary(anova_price_group) -> sum_anova_price_group
 xkabledply(sum_anova_price_group, title = "ANOVA result summary for Neighborhood Groups")
 
+tukeyAoV_pg <- TukeyHSD(anova_price_group)
+tukeyAoV_pg
+
 #anova test for price and neighborhoods
 anova_price_neig = aov(price ~ neighbourhood, data=airbnb_df)
 anova_price_neig
@@ -55,5 +58,8 @@ anova_price_room = aov(price ~ room_type, data=airbnb_df)
 anova_price_room
 summary(anova_price_room) -> sum_anova_price_room
 xkabledply(sum_anova_price_room, title = "ANOVA result summary for Room Type")
+
+tukeyAoV_pr <- TukeyHSD(anova_price_room)
+tukeyAoV_pr
 
 ```
