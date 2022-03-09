@@ -1,0 +1,65 @@
+---
+title: "T_intervals"
+author: "Pavani Samala"
+date: "3/1/2022"
+output: html_document
+---
+```{r setup, include=FALSE}
+# some of common options (and the defaults) are: 
+# include=T, eval=T, echo=T, results='hide'/'asis'/'markup',..., collapse=F, warning=T, message=T, error=T, cache=T, fig.width=6, fig.height=4, fig.dim=c(6,4) #inches, fig.align='left'/'center','right', 
+# knitr::opts_chunk$set(warning = F, results = "markup", message = F)
+library(ezids)
+knitr::opts_chunk$set(warning = F, results = "hide", message = F)
+options(scientific=T, digits = 3) 
+# options(scipen=9, digits = 3) 
+# ‘scipen’: integer. A penalty to be applied when deciding to print numeric values in fixed or exponential notation.  Positive values bias towards fixed and negative towards scientific notation: fixed notation will be preferred unless it is more than ‘scipen’ digits wider.
+# use scipen=999 to prevent scientific notation at all times
+```
+
+```{r, echo = F}
+# read in dataset
+airbnb <- read.csv("NYC ABS.csv", header = TRUE)
+airbnb_df <- data.frame(airbnb)
+airbnb_df$neighbourhood_group <- as.factor(airbnb_df$neighbourhood_group)
+airbnb_df$neighbourhood <- as.factor(airbnb_df$neighbourhood)
+airbnb_df$room_type <- as.factor(airbnb_df$room_type)
+
+```
+
+```{r, results='markup'}
+ttest_price_80 = t.test(x=airbnb$price, conf.level=0.80 )
+print(ttest_price_80)
+
+ttest_price_99 = t.test(x=airbnb$price, conf.level=0.99 )
+print(ttest_price_99)
+
+```
+
+
+
+```{r aov, results='markup'}
+#anova test for price and neighborhood groups
+anova_price_group = aov(price ~ neighbourhood_group, data=airbnb_df)
+anova_price_group
+summary(anova_price_group) -> sum_anova_price_group
+xkabledply(sum_anova_price_group, title = "ANOVA result summary for Neighborhood Groups")
+
+tukeyAoV_pg <- TukeyHSD(anova_price_group)
+tukeyAoV_pg
+
+#anova test for price and neighborhoods
+anova_price_neig = aov(price ~ neighbourhood, data=airbnb_df)
+anova_price_neig
+summary(anova_price_neig) -> sum_anova_price_neig
+xkabledply(sum_anova_price_neig, title = "ANOVA result summary for Neighborhoods")
+
+#anova test for price and room type
+anova_price_room = aov(price ~ room_type, data=airbnb_df)
+anova_price_room
+summary(anova_price_room) -> sum_anova_price_room
+xkabledply(sum_anova_price_room, title = "ANOVA result summary for Room Type")
+
+tukeyAoV_pr <- TukeyHSD(anova_price_room)
+tukeyAoV_pr
+
+```
