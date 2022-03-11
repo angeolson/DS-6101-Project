@@ -43,7 +43,7 @@ cor.test(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews)
 ```{r, results = 'markup'}
 library(ggplot2)
 ggplot(airbnb_cor, aes(reviews_per_month,
-              number_of_reviews)) + geom_point(colour = 'blue') + theme_grey()
+              number_of_reviews)) + ggtitle("Number of reviews VS Reviews per month") + xlab("Reviews per month") + ylab("Number of reviews") + geom_point(colour = 'blue') + theme_grey()
 cor.test(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews, method = "pearson")
 ```
 
