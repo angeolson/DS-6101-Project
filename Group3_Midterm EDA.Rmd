@@ -8,6 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning = F, results = "hide", message = F)
 options(scientific=T, digits = 3) 
+library(ezids)
 ```
 
 # Section I: Set-Up and Summary of the Dataset
@@ -57,40 +58,31 @@ Our secondary dataset (used to measure correlation) is described below:
 
 # Section III: Plots and Graphs
 
-## Basic Scatter Plots for Correlated Variables
+## Scatter Plot for Price and Number of Reviews
 
-```{r}
-plot(x=airbnb_cor$availability_365, y=airbnb_cor$minimum_nights)
-plot(x=airbnb_cor$availability_365, y=airbnb_cor$number_of_reviews)
-plot(x=airbnb_cor$availability_365, y=airbnb_cor$calculated_host_listings_count)
-```
-
-```{r, results = "markup"}
-library(ggplot2)
-library(ggpubr)
-ggplot(airbnb, aes(x=availability_365, y=minimum_nights)) + ggtitle("Minimum nights vs Availability Scatter plot") + xlab("Availability") + ylab("# Minimum nights") + geom_point(size = 1, shape = 18, color = "black") + ylim(0,400) + stat_cor(method = "pearson", label.x = 275) + geom_smooth(method = lm, se = FALSE, color = "yellow", size = 1.2) + theme_bw()
-cor.test(airbnb$availability_365, airbnb$minimum_nights)
-```
-
-```{r}
-library(ggplot2)
-library(ggpubr)
-ggplot(airbnb, aes(x=availability_365, y=number_of_reviews)) + ggtitle("Number of reviews vs Availability") + xlab("Availability") + ylab("# Reviews")  + geom_point(size = 1, shape = 18, color = "black") + ylim(0,800) + stat_cor(method = "pearson", label.x = 275) + geom_smooth(method = lm, se = FALSE, color = "yellow", size = 1.2) + theme_bw()
-cor.test(airbnb$availability_365, airbnb$number_of_reviews)
-```
-
-
-```{r}
-library(ggplot2)
-library(ggpubr)
-ggplot(airbnb, aes(x=availability_365, y=calculated_host_listings_count)) + ggtitle("# Host listings vs Availability") + xlab("Availability") + ylab("Host listings") + geom_point(size = 1, shape = 18, color = "black") + ylim(0,400) + stat_cor(method = "pearson", label.x = 275) + geom_smooth(method = lm, se = FALSE, color = "yellow", size = 1.2) + theme_bw()
-cor.test(airbnb$availability_365, airbnb$calculated_host_listings_count)
-```
-
+Scatter plot for `price` and `number of reviews`: 
 ```{r, results = "markup"}
 library(ggplot2)
 library(ggpubr)
 ggplot(airbnb, aes(x=price, y=number_of_reviews,)) + ggtitle("Number of Reviews vs Price Scatter Plot") + xlab("Price ($)") + ylab("Number Of Reviews") + geom_point(size = 1, shape = 18, color = "black") + geom_smooth(method = lm, se = FALSE, color = "yellow", size = 1.2) + theme_bw() + stat_cor(method =  "pearson", label.x = 7500 )
+```
+
+## Box Plot for Price and Neighborhood Group
+
+```{r, results = "markup"}
+
+```
+
+## Box Plot for Price and Room Type
+
+```{r, results = "markup"}
+
+```
+
+## Map of NY by Price??
+
+```{r, results = "markup"}
+
 ```
 
 # Section IV: Correlation and ANOVA Tests
@@ -98,7 +90,11 @@ ggplot(airbnb, aes(x=price, y=number_of_reviews,)) + ggtitle("Number of Reviews 
 ## Correlation
 ### Correlation Matrix for Airbnb Data
 ```{r, results = "markup"}
-cor(airbnb_cor)
+loadPkg("faraway")
+loadPkg("corrplot")
+xkabledply(cor(airbnb_cor))
+airbnb_corplot = cor(airbnb_cor, use = "complete.obs")
+corrplot(airbnb_corplot, method = "circle")
 ```
 
 No strong correlations with price, but `minimum_nights` and `availability_365`, `number_of_reviews` and `availability_365`, and `calculated_host_listings_count` and `availability_365` show some evidence of positive correlation. 
@@ -110,7 +106,7 @@ plot(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews)
 cor.test(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews)
 ```
 
-As expected, correlated since reivews per month is a function of total number of reviews so do not need to look at both.
+As expected, correlated since reviews per month is a function of total number of reviews so do not need to look at both.
 
 
 ### Correlation Between Number of Reviews (Y) and Price (X) 
