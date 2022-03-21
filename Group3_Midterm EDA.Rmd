@@ -1,0 +1,155 @@
+---
+title: "Correlations"
+author: "Group 3: Pavani Samala, Ange Olson, Kowshik Bezawada, Meghana Gantla"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = F, results = "hide", message = F)
+options(scientific=T, digits = 3) 
+library(ezids)
+```
+
+# Section I: Set-Up and Summary of the Dataset
+
+First, we read in the data and set it up for analysis. The data is mostly cleaned, but we need a subset for calculating correlation, we need to change some data to be categorical, some data to be numerical, and we need to fix the dates so that they aren't read in as characters.
+
+Without doing anything, our dataset is as follows:
+
+```{r, echo = F}
+
+```
+
+
+```{r, echo = F}
+# read in dataset
+airbnb <- data.frame(read.csv("NYC ABS.csv", header = TRUE))
+
+# edit dates
+airbnb$last_review <- as.Date(airbnb$last_review, format = "%m/%d/%Y")
+
+# cast categorical variables
+airbnb$neighbourhood_group <- as.factor(airbnb$neighbourhood_group)
+airbnb$neighbourhood <- as.factor(airbnb$neighbourhood)
+airbnb$room_type <- as.factor(airbnb$room_type)
+
+# cast numerical variables as numeric
+airbnb[ , c(10, 11, 12, 14, 15, 16)] <- lapply(airbnb[ , c(10, 11, 12, 14, 15, 16)], as.numeric)
+
+# subset rows for correlation and cast as numeric
+airbnb_cor <- airbnb[ , c(10, 11, 12, 14, 15, 16)]
+```
+
+After cleaning, our main dataset is described below:
+
+```{r, echo = F}
+
+```
+
+Our secondary dataset (used to measure correlation) is described below:
+
+```{r, echo = F}
+
+```
+
+# Section II: Descriptive Statistics
+
+
+# Section III: Plots and Graphs
+
+## Scatter Plot for Price and Number of Reviews
+
+Scatter plot for `price` and `number of reviews`: 
+```{r, results = "markup"}
+library(ggplot2)
+library(ggpubr)
+ggplot(airbnb, aes(x=price, y=number_of_reviews,)) + ggtitle("Number of Reviews vs Price Scatter Plot") + xlab("Price ($)") + ylab("Number Of Reviews") + geom_point(size = 1, shape = 18, color = "black") + geom_smooth(method = lm, se = FALSE, color = "yellow", size = 1.2) + theme_bw() + stat_cor(method =  "pearson", label.x = 7500 )
+```
+
+## Box Plot for Price and Neighborhood Group
+
+```{r, results = "markup"}
+
+```
+
+## Box Plot for Price and Room Type
+
+```{r, results = "markup"}
+
+```
+
+## Map of NY by Price??
+
+```{r, results = "markup"}
+
+```
+
+# Section IV: Correlation and ANOVA Tests
+
+## Correlation
+### Correlation Matrix for Airbnb Data
+```{r, results = "markup"}
+loadPkg("faraway")
+loadPkg("corrplot")
+xkabledply(cor(airbnb_cor))
+airbnb_corplot = cor(airbnb_cor, use = "complete.obs")
+corrplot(airbnb_corplot, method = "circle")
+```
+
+No strong correlations with price, but `minimum_nights` and `availability_365`, `number_of_reviews` and `availability_365`, and `calculated_host_listings_count` and `availability_365` show some evidence of positive correlation. 
+
+### Correlation Between Reviews per Month and Total Reviews
+
+```{r, results = "markup"}
+plot(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews)
+cor.test(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews)
+```
+
+As expected, correlated since reviews per month is a function of total number of reviews so do not need to look at both.
+
+
+### Correlation Between Number of Reviews (Y) and Price (X) 
+
+```{r, results = "markup"}
+plot(y=airbnb$number_of_reviews, x=airbnb$price)
+cor.test(y=airbnb$number_of_reviews, x=airbnb$price)
+```
+
+No evidence of strong (linear) correlation, but evidence of an inverse relationship between price and reviews (higher price, fewer reviews--possibly because of fewer stays, for which review number is probably a good proxy)
+
+
+## ANOVA Tests
+
+### Testing for Differences in Price by Neighborhood Group
+
+```{r aov, results='markup'}
+#anova test for price and neighborhood groups
+anova_price_group = aov(price ~ neighbourhood_group, data=airbnb)
+anova_price_group
+summary(anova_price_group) -> sum_anova_price_group
+xkabledply(sum_anova_price_group, title = "ANOVA result summary for Neighborhood Groups")
+
+tukeyAoV_pg <- TukeyHSD(anova_price_group)
+tukeyAoV_pg
+
+```
+
+
+### Testing for Differences in Price by Room Type
+
+```{r aov, results='markup'}
+#anova test for price and room type
+anova_price_room = aov(price ~ room_type, data=airbnb)
+anova_price_room
+summary(anova_price_room) -> sum_anova_price_room
+xkabledply(sum_anova_price_room, title = "ANOVA result summary for Room Type")
+
+tukeyAoV_pr <- TukeyHSD(anova_price_room)
+tukeyAoV_pr
+```
+
+
+
+
+
