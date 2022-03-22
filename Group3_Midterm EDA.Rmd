@@ -70,13 +70,15 @@ ggplot(airbnb, aes(x=price, y=number_of_reviews,)) + ggtitle("Number of Reviews 
 ## Box Plot for Price and Neighborhood Group
 
 ```{r, results = "markup"}
-
+library(ggplot2)
+ggplot(airbnb, aes(price, factor(neighbourhood_group))) + geom_boxplot(width = 0.7, color = "black", fill = c("light green", "pink","light blue", "yellow", "red")) +labs(title = "Neighbourhood group vs Price Box plot", x = "Price", y = "Neighbourhood")
 ```
 
 ## Box Plot for Price and Room Type
 
 ```{r, results = "markup"}
-
+library(ggplot2)
+ggplot(airbnb, aes(price, factor(room_type))) + geom_boxplot(width = 0.7, color = "black", fill = c("light green", "yellow","light blue")) +labs(title = "Room type vs Price Box plot", x = "Price", y = "Room Type")
 ```
 
 ## Map of NY by Price??
