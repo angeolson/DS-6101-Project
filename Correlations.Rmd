@@ -159,3 +159,42 @@ ggplot(airbnb_cor, aes(x = airbnb$price)) +
          y = "Frequency" ) +
            theme_dark()
 ```
+
+
+#summary of dataset
+```{r}
+summary(airbnb)
+```
+#box plot for neighbourhood group vs price
+```{r, results='markup'}
+library(ggplot2)
+ggplot(airbnb, aes(price, factor(neighbourhood_group))) + geom_boxplot(width = 0.7, color = "black", fill = c("light green", "pink","light blue", "yellow", "red")) +labs(title = "Neighbourhood group vs Price Box plot", x = "Price", y = "Neighbourhood")
+
+```
+#boxplot for room type vs price
+```{r, results='markup'}
+library(ggplot2)
+ggplot(airbnb, aes(price, factor(room_type))) + geom_boxplot(width = 0.7, color = "black", fill = c("light green", "yellow","light blue")) +labs(title = "Room type vs Price Box plot", x = "Price", y = "Room Type")
+```
+
+
+
+```{r}
+#library(tidyverse)
+#library(ggplot2)
+#library(ggmap)
+#library(tidyr)
+#newyork.map <- get_map("New York", zoom = 15)
+#ggmap(newyork.map)
+```
+#necessary package for mapping
+```{r}
+install.packages("ggmap")
+install.packages("tmaptools")
+```
+#New york map with Lat and Long data
+```{r, results='markup'}
+library(ggmap)
+library(tmaptools)
+ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("New York")$bbox))), zoom = 10)) + geom_point(data = airbnb, aes(x = longitude, y = latitude))
+```
