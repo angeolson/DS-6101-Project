@@ -87,7 +87,16 @@ ggplot(airbnb, aes(price, factor(room_type))) + geom_boxplot(width = 0.7, color 
 ```{r, results='markup'}
 library(ggmap)
 library(tmaptools)
-ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("New York")$bbox))), zoom = 10)) + geom_point(data = airbnb, aes(x = longitude, y = latitude))
+library(tidyr)
+ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("New York")$bbox))), zoom = 10)) + 
+  geom_point(data = airbnb, aes(x = longitude, y = latitude, colour = neighbourhood_group, size = price, alpha = 0.25))
+```
+
+### Option 2: 
+```{r, results='markup'}
+library(OpenStreetMap)
+library(ggplot2)
+
 ```
 
 # Section IV: Correlation and ANOVA Tests
