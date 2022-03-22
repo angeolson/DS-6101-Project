@@ -40,6 +40,19 @@ plot(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews)
 cor.test(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews)
 ```
 
+# Scatter plot
+```{r, results = 'markup'}
+library(ggplot2)
+ggplot(airbnb_cor, aes(reviews_per_month, number_of_reviews)) + 
+  ggtitle("Number of Reviews VS Reviews per Month") + 
+     xlab("Reviews per month") + 
+       ylab("Number of reviews") + 
+        geom_point(colour = 'blue') + 
+          theme_grey()
+cor.test(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews, method = "pearson")
+```
+
+
 As expected, correlated since reivews per month is a function of total number of reviews so do not need to look at both.
 
 
@@ -88,7 +101,61 @@ ggplot(airbnb, aes(x=price, y=number_of_reviews,)) + ggtitle("Number of Reviews 
 
 No evidence of strong (linear) correlation, but evidence of an inverse relationship between price and reviews (higher price, fewer reviews--possibly because of fewer stays, for which review number is probably a good proxy)
 
+## Histogram Plots for the five variables
 
+# Hist plot for "Reviews per Month" variable
 
+```{r, results = 'markup'}
+library(ggplot2)
+ggplot(airbnb_cor, aes(x = reviews_per_month)) + 
+  geom_histogram(color="yellow", fill="red") + 
+    labs( title = "Histogram for Reviews per Month", 
+        x = "Reviews per Month", 
+         y = "Frequency" ) +
+           theme_dark()
+```
+# Hist plot for "Number of Reviews" variable
 
+```{r, results = 'markup'}
+library(ggplot2)
+ggplot(airbnb_cor, aes(x = number_of_reviews)) + 
+  geom_histogram(color="Red", fill="Yellow") + 
+    labs( title = "Histogram for Number of Reviews", 
+        x = "Number of Reviews", 
+         y = "Frequency" ) +
+           theme_dark()
+```
+# Hist plot for "Minimum Nights" variable
 
+```{r, results = 'markup'}
+library(ggplot2)
+ggplot(airbnb_cor, aes(x = minimum_nights)) + 
+  geom_histogram(color="#E69F00", fill="#56B4E9",) + 
+    labs( title = "Histogram for Minimum Nights", 
+        x = "Minimum Nights", 
+         y = "Frequency" ) +
+           theme_dark()
+```
+# Hist plot for "Calculated Host Listings" variable
+
+```{r, results = 'markup'}
+library(ggplot2)
+ggplot(airbnb_cor, aes(x = calculated_host_listings_count)) + 
+  geom_histogram(color="white", fill="#E69F00") + 
+    labs( title = "Histogram for Count of Calculated Host Listings", 
+        x = "Calculated Host Listings", 
+         y = "Frequency" ) +
+           theme_dark()
+```
+
+# Hist plot for "Airbnb Price" variable
+
+```{r, results = 'markup'}
+library(ggplot2)
+ggplot(airbnb_cor, aes(x = airbnb$price)) + 
+  geom_histogram(color="mediumorchid2", fill="yellowgreen") + 
+    labs( title = "Histogram for Airbnb Price", 
+        x = "Airbnb Price", 
+         y = "Frequency" ) +
+           theme_dark()
+```
