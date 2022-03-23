@@ -89,16 +89,36 @@ library(ggmap)
 library(tmaptools)
 library(tidyr)
 ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("New York")$bbox))), zoom = 10)) + 
-  geom_point(data = airbnb, aes(x = longitude, y = latitude, colour = neighbourhood_group, size = price, alpha = 0.25))
+  geom_point(data = airbnb, aes(x = longitude, y = latitude, colour = neighbourhood_group, size = price), alpha = 0.2)
 ```
 
 ### Option 2: 
 ```{r, results='markup'}
-library(OpenStreetMap)
-library(ggplot2)
 
+# create subset just for aggregating by mean
+airbnb_map <- airbnb[ , c(6, 7, 8, 10)]
+airbnb_map_means <- aggregate(.~neighbourhood, airbnb_map, mean)
+
+# create subset for aggregating by count
+airbnb_count <- airbnb_map
+airbnb_count$count <- 1
+airbnb_count <- airbnb_count[, c(1,5)]
+airbnb_counter <- aggregate(.~neighbourhood, airbnb_count, sum)
+
+# create full dataset from both subsets
+airbnb_map_full <- cbind(airbnb_counter, airbnb_map_means)
+
+# check that union occured correctly, then drop extra neighborhood value
+all.equal(airbnb_map_full[, 1], airbnb_map_full[, 3])
+airbnb_map_full <- airbnb_map_full[, -3]
+
+library(ggmap)
+library(tmaptools)
+library(tidyr)
+ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("New York")$bbox))), zoom = 10)) + 
+  geom_point(data = airbnb_map_full, aes(x = longitude, y = latitude, colour = price, size = count), alpha = 0.5) + scale_colour_gradientn(colours=rainbow(3))
+  
 ```
-
 # Section IV: Correlation and ANOVA Tests
 
 ## Correlation
