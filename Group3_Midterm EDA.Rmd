@@ -60,25 +60,38 @@ Our secondary dataset (used to measure correlation) is described below:
 
 ## Scatter Plot for Price and Number of Reviews
 
-Scatter plot for `price` and `number of reviews`: 
+Scatter plot for `price` and `number of reviews` taking the $$\log (reviews)$$ to show linear trend: 
 ```{r, results = "markup"}
 library(ggplot2)
 library(ggpubr)
-ggplot(airbnb, aes(x=price, y=number_of_reviews,)) + ggtitle("Number of Reviews vs Price Scatter Plot") + xlab("Price ($)") + ylab("Number Of Reviews") + geom_point(size = 1, shape = 18, color = "black") + geom_smooth(method = lm, se = FALSE, color = "yellow", size = 1.2) + theme_bw() + stat_cor(method =  "pearson", label.x = 7500 )
+ggplot(airbnb, aes(x=price, y=log(number_of_reviews))) + 
+  ggtitle("Number of Reviews vs Price Scatter Plot") + 
+  xlab("Price ($)") + ylab("Number Of Reviews") + 
+  geom_point(size = 1, shape = 18, color = "black") + 
+  geom_smooth(method = lm, se = FALSE, color = "yellow", size = 1.2) + theme_bw() + 
+  stat_cor(method =  "pearson", label.x = 6500 )
 ```
 
 ## Box Plot for Price and Neighborhood Group
 
+Note: outliers extend past $1,000 per night, graph truncated for visibility and interpretation. 
+
 ```{r, results = "markup"}
 library(ggplot2)
-ggplot(airbnb, aes(price, factor(neighbourhood_group))) + geom_boxplot(width = 0.7, color = "black", fill = c("light green", "pink","light blue", "yellow", "red")) +labs(title = "Neighbourhood group vs Price Box plot", x = "Price", y = "Neighbourhood")
+ggplot(airbnb, aes(price, factor(neighbourhood_group))) + 
+  geom_boxplot(color = "black", fill = c("light green", "pink","light blue", "yellow", "red")) +
+  labs(title = "Neighbourhood group vs Price Box plot", x = "Price", y = "Neighbourhood") +
+  xlim(0, 1000)
 ```
 
 ## Box Plot for Price and Room Type
+Note: outliers extend past $1,000 per night, graph truncated for visibility and interpretation. 
 
 ```{r, results = "markup"}
 library(ggplot2)
-ggplot(airbnb, aes(price, factor(room_type))) + geom_boxplot(width = 0.7, color = "black", fill = c("light green", "yellow","light blue")) +labs(title = "Room type vs Price Box plot", x = "Price", y = "Room Type")
+ggplot(airbnb, aes(price, factor(room_type))) + 
+  geom_boxplot(width = 0.7, color = "black", fill = c("light green", "yellow","light blue")) +
+  labs(title = "Room type vs Price Box plot", x = "Price", y = "Room Type") + xlim(0, 1000)
 ```
 
 ## Map of NY by Price
