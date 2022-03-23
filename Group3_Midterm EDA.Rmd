@@ -136,7 +136,6 @@ No strong correlations with price, but `minimum_nights` and `availability_365`, 
 ### Correlation Between Reviews per Month and Total Reviews
 
 ```{r, results = "markup"}
-plot(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews)
 cor.test(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews)
 ```
 
@@ -146,7 +145,6 @@ As expected, correlated since reviews per month is a function of total number of
 ### Correlation Between Number of Reviews (Y) and Price (X) 
 
 ```{r, results = "markup"}
-plot(y=airbnb$number_of_reviews, x=airbnb$price)
 cor.test(y=airbnb$number_of_reviews, x=airbnb$price)
 ```
 
@@ -157,7 +155,7 @@ No evidence of strong (linear) correlation, but evidence of an inverse relations
 
 ### Testing for Differences in Price by Neighborhood Group
 
-```{r aov, results='markup'}
+```{r, results='markup'}
 #anova test for price and neighborhood groups
 anova_price_group = aov(price ~ neighbourhood_group, data=airbnb)
 anova_price_group
@@ -172,7 +170,7 @@ tukeyAoV_pg
 
 ### Testing for Differences in Price by Room Type
 
-```{r aov, results='markup'}
+```{r, results='markup'}
 #anova test for price and room type
 anova_price_room = aov(price ~ room_type, data=airbnb)
 anova_price_room
