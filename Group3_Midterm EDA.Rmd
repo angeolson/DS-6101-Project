@@ -26,8 +26,8 @@ First, we read in the data and set it up for analysis. The data is mostly cleane
 
 Without doing anything, our dataset is as follows:
 
-```{r, echo = F}
-
+```{r, results="asis"}
+str(airbnb)
 ```
 
 
@@ -52,14 +52,14 @@ airbnb_cor <- airbnb[ , c(10, 11, 12, 14, 15, 16)]
 
 After cleaning, our main dataset is described below:
 
-```{r, echo = F}
-
+```{r, results = "asis"}
+str(airbnb)
 ```
 
 Our secondary dataset (used to measure correlation) is described below:
 
-```{r, echo = F}
-
+```{r, results="asis"}
+str(airbnb_cor)
 ```
 
 # Section II: Descriptive Statistics
@@ -68,7 +68,6 @@ Our dataset has `r nrow(airbnb)` observations.
 
 ```{r, results = "markup", echo = F}
 xkablesummary(airbnb)
-
 ```
 
 
