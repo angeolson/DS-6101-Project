@@ -54,6 +54,11 @@ Our secondary dataset (used to measure correlation) is described below:
 ```
 
 # Section II: Descriptive Statistics
+```{r}
+nrow(airbnb)
+xkablesummary(airbnb)
+
+```
 
 
 # Section III: Plots and Graphs
