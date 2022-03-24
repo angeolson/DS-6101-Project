@@ -186,10 +186,9 @@ No evidence of strong (linear) correlation, but evidence of an inverse relations
 
 ### Testing for Differences in Price by Neighborhood Group
 
-```{r, results='markup'}
+```{r, results = "markup"}
 #anova test for price and neighborhood groups
 anova_price_group = aov(price ~ neighbourhood_group, data=airbnb)
-anova_price_group
 summary(anova_price_group) -> sum_anova_price_group
 xkabledply(sum_anova_price_group, title = "ANOVA result summary for Neighborhood Groups")
 
@@ -201,10 +200,9 @@ tukeyAoV_pg
 
 ### Testing for Differences in Price by Room Type
 
-```{r, results='markup'}
+```{r, results = "markup"}
 #anova test for price and room type
 anova_price_room = aov(price ~ room_type, data=airbnb)
-anova_price_room
 summary(anova_price_room) -> sum_anova_price_room
 xkabledply(sum_anova_price_room, title = "ANOVA result summary for Room Type")
 
