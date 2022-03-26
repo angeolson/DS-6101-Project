@@ -79,7 +79,7 @@ xkablesummary(airbnb)
 
 First, we look at the price distribution for the entire dataset:
 
-```{r, results='markup'}
+```{r, results = 'markup'}
 library(ggplot2)
 ggplot(data=airbnb, aes(price)) + 
   geom_histogram(bins=100, 
@@ -90,13 +90,14 @@ ggplot(data=airbnb, aes(price)) +
   labs(title="Histogram of AirBnB Price (All Observations)") 
 ```
 
+
 ## qqplot for Price (All Observations)
 ```{r, results='markup'}
 qqnorm(airbnb$price, pch = 20, main = "Q-Q Plot for AirBnB Prices (All Observations)")
 qqline(airbnb$price, col = "black", lwd = 2)
 ```
 
-Price is not normally distributed, and ther appear to be a large number of outliers. If we remove those outliers, the distribution is close to normal. 
+Price is not normally distributed, and there appear to be a large number of outliers. If we remove those outliers, the distribution is close to normal. 
 
 ```{r}
 airbnb_clean = outlierKD2(airbnb, price, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
@@ -104,15 +105,17 @@ airbnb_clean = outlierKD2(airbnb, price, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
 
 ## Histogram for Price (Outliers Removed)
 
-```{r, results='markup'}
+```{r, results = 'markup'}
 library(ggplot2)
-ggplot(data=airbnb_clean, aes(price)) + 
-  geom_histogram(bins=100, 
-                 col="dark blue", 
-                 fill="light blue", 
-                 alpha = .7) + # opacity
-  labs(x="Price", y="Frequency") +
-  labs(title="Histogram of AirBnB Price (Outliers Removed)") 
+ggplot(data = airbnb_clean, aes(price)) +  
+  geom_histogram(bins = 100, 
+                 col  = "dark blue", 
+                 fill = "light blue", 
+                alpha = .7) +  # opacity
+    labs(title = "Histogram of AirBnB Price (Outliers removed)", 
+             x = "AirBnB Price", 
+             y = "Frequency") +
+     theme_grey()
 ```
 
 ## qqplot for Price (Outliers Removed)
