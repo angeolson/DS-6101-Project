@@ -111,7 +111,7 @@ ggplot(airbnb_cor, aes(x = reviews_per_month)) +
   geom_histogram(color="yellow", fill="red") + 
     labs( title = "Histogram for Reviews per Month", 
         x = "Reviews per Month", 
-         y = "Frequency" ) +
+         y = "Frequency") +
            theme_dark()
 ```
 # Hist plot for "Number of Reviews" variable
