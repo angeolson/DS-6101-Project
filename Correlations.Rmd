@@ -29,7 +29,7 @@ airbnb_cor[ , ] <- lapply(airbnb_cor[ , ], as.numeric)
 ## Correlation Matrix for Airbnb Data
 ```{r, results = "markup"}
 cor(airbnb_cor)
-```
+```  
 
 No strong correlations with price, but `minimum_nights` and `availability_365`, `number_of_reviews` and `availability_365`, and `calculated_host_listings_count` and `availability_365` show some evidence of positive correlation. 
 
@@ -153,10 +153,10 @@ ggplot(airbnb_cor, aes(x = calculated_host_listings_count)) +
 ```{r, results = 'markup'}
 library(ggplot2)
 ggplot(airbnb_cor, aes(x = airbnb$price)) + 
-  geom_histogram(color="mediumorchid2", fill="yellowgreen") + 
+  geom_histogram(color="blue", fill="yellowgreen") + 
     labs( title = "Histogram for Airbnb Price", 
         x = "Airbnb Price", 
-         y = "Frequency" ) +
+         y = "Frequency") +
            theme_dark()
 ```
 
