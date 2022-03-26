@@ -135,15 +135,15 @@ ggmap::register_google(key = "AIzaSyBuM2zUJqBlgjcki9tYS1emZr3awesSqac")
 
 #map by price 
 newyork.map <- get_map("New York", zoom = 10, scale = 1, maptype = "terrain", color = "bw")
-ggmap(newyork.map) + geom_point(data=airbnb, aes(x=longitude, y=latitude, color = price), size=0.2)
+ggmap(newyork.map) + geom_point(data=airbnb, aes(x=longitude, y=latitude, color = price), size=0.2) + scale_colour_gradientn(colours=rainbow(3))
 ```
 
 ```{r, results='markup'}
-library(ggmap)
-library(tmaptools)
-library(tidyr)
-ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("New York")$bbox))), zoom = 10)) + 
-  geom_point(data = airbnb, aes(x = longitude, y = latitude, colour = neighbourhood_group, size = price), alpha = 0.2)
+#library(ggmap)
+#library(tmaptools)
+#library(tidyr)
+#ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("New York")$bbox))), zoom = 10)) + 
+#  geom_point(data = airbnb, aes(x = longitude, y = latitude, colour = neighbourhood_group, size = price), alpha = 0.2)
 ```
 
 ### AirBnB Average Price and Number of Listings by Neighborhood:
