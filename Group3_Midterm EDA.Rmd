@@ -27,13 +27,15 @@ First, we read in the data and set it up for analysis. The data is mostly cleane
 Without doing anything, our dataset is as follows:
 
 ```{r, results="asis"}
+# read in dataset
+airbnb <- data.frame(read.csv("NYC ABS.csv", header = TRUE))
+
+#structure of dataset
 str(airbnb)
 ```
 
 
 ```{r, echo = F}
-# read in dataset
-airbnb <- data.frame(read.csv("NYC ABS.csv", header = TRUE))
 
 # edit dates
 airbnb$last_review <- as.Date(airbnb$last_review, format = "%m/%d/%Y")
@@ -72,6 +74,17 @@ xkablesummary(airbnb)
 
 
 # Section III: Plots and Graphs
+
+## Histogram for Price
+```{r, results='markup'}
+
+```
+
+## qqplot for Price
+```{r, results='markup'}
+qqnorm(airbnb$price, pch = 20, main = "Q-Q Plot for all airbnb Prices")
+qqline(airbnb$price, col = "yellow", lwd = 2)
+```
 
 ## Scatter Plot for Price and Number of Reviews
 
@@ -112,6 +125,19 @@ ggplot(airbnb, aes(price, factor(room_type))) +
 ## Map of NY by Price
 
 ### AirBnB Density by Neighborhood Group and Price: 
+```{r}
+#Load the library
+library(ggplot2)
+library(ggmap)
+
+#Set your API Key
+ggmap::register_google(key = "AIzaSyBuM2zUJqBlgjcki9tYS1emZr3awesSqac")
+
+#map by price 
+newyork.map <- get_map("New York", zoom = 10, scale = 1, maptype = "terrain", color = "bw")
+ggmap(newyork.map) + geom_point(data=airbnb, aes(x=longitude, y=latitude, color = price), size=0.2)
+```
+
 ```{r, results='markup'}
 library(ggmap)
 library(tmaptools)

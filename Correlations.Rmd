@@ -21,7 +21,7 @@ options(scientific=T, digits = 3)
 # read in dataset
 airbnb <- read.csv("NYC ABS.csv", header = TRUE)
 
-# subset rows for correlation and cast as numeric
+# subset columns for correlation and cast as numeric
 airbnb_cor <- airbnb[ , c(10, 11, 12, 14, 15, 16)]
 airbnb_cor[ , ] <- lapply(airbnb_cor[ , ], as.numeric)
 ```
@@ -177,24 +177,54 @@ library(ggplot2)
 ggplot(airbnb, aes(price, factor(room_type))) + geom_boxplot(width = 0.7, color = "black", fill = c("light green", "yellow","light blue")) +labs(title = "Room type vs Price Box plot", x = "Price", y = "Room Type")
 ```
 
+```{r}
+
+#Load the library
+library("ggmap")
+
+#Set your API Key
+ggmap::register_google(key = "AIzaSyBuM2zUJqBlgjcki9tYS1emZr3awesSqac")
+```
 
 
 ```{r}
-#library(tidyverse)
-#library(ggplot2)
-#library(ggmap)
-#library(tidyr)
-#newyork.map <- get_map("New York", zoom = 15)
-#ggmap(newyork.map)
-```
-#necessary package for mapping
-```{r}
-install.packages("ggmap")
-install.packages("tmaptools")
-```
-#New york map with Lat and Long data
-```{r, results='markup'}
+library(ggplot2)
 library(ggmap)
 library(tmaptools)
-ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("New York")$bbox))), zoom = 10)) + geom_point(data = airbnb, aes(x = longitude, y = latitude))
+ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("New York")$bbox))), zoom = 10)) + geom_point(data = airbnb, alpha = .01, aes(x = longitude, y = latitude))
+
 ```
+
+#New york map with Lat and Long data
+
+```{r, results='markup'}
+library(ggplot2)
+library(ggmap)
+newyork.map <- get_map("New York", zoom = 10, scale = 1, maptype = "terrain", color = "bw")
+ggmap(newyork.map) + geom_point(data=airbnb, aes(x=longitude, y=latitude, color = price), size=0.2)
+```
+
+
+```{r, results='markup'}
+newyork.map <- ggmap(get_map(location= 'Lower Manhattan, New York', 
+                       maptype='roadmap', color='bw',source='google',zoom=11)) + 
+  geom_point(data=airbnb, aes(x=longitude,y=latitude), color='red',size=2)
+newyork.map
+```
+
+
+#necessary package for mapping
+```{r}
+#install.packages("ggmap")
+#install.packages("tmaptools")
+#install.packages("lubridate")
+#install.packages("ggplot2")
+#install.packages("data.table")
+#install.packages("ggrepel")
+#install.packages("dplyr")
+#install.packages("data.table")
+#install.packages("tidyverse")
+#devtools::install_github("dkahle/ggmap", ref = "tidyup", force=TRUE)
+```
+
+
