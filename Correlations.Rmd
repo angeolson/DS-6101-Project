@@ -177,6 +177,7 @@ library(ggplot2)
 ggplot(airbnb, aes(price, factor(room_type))) + geom_boxplot(width = 0.7, color = "black", fill = c("light green", "yellow","light blue")) +labs(title = "Room type vs Price Box plot", x = "Price", y = "Room Type")
 ```
 
+
 ```{r}
 
 #Load the library
@@ -186,17 +187,15 @@ library("ggmap")
 ggmap::register_google(key = "AIzaSyBuM2zUJqBlgjcki9tYS1emZr3awesSqac")
 ```
 
-
+#new york map without need for the API key
 ```{r}
 library(ggplot2)
 library(ggmap)
 library(tmaptools)
-ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("New York")$bbox))), zoom = 10)) + geom_point(data = airbnb, alpha = .01, aes(x = longitude, y = latitude))
-
+ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("New York")$bbox))), zoom = 11)) + geom_point(data = airbnb, alpha = .01, aes(x = longitude, y = latitude))
 ```
 
-#New york map with Lat and Long data
-
+#New york map with Lat and Long data by price
 ```{r, results='markup'}
 library(ggplot2)
 library(ggmap)
@@ -204,11 +203,11 @@ newyork.map <- get_map("New York", zoom = 10, scale = 1, maptype = "terrain", co
 ggmap(newyork.map) + geom_point(data=airbnb, aes(x=longitude, y=latitude, color = price), size=0.2)
 ```
 
-
+#new york map with lat and long data
 ```{r, results='markup'}
 newyork.map <- ggmap(get_map(location= 'Lower Manhattan, New York', 
-                       maptype='roadmap', color='bw',source='google',zoom=11)) + 
-  geom_point(data=airbnb, aes(x=longitude,y=latitude), color='red',size=2)
+                       maptype='roadmap', color='bw',source='google',zoom=10)) + 
+  geom_point(data=airbnb, aes(x=longitude,y=latitude), color='black',size=0.2)
 newyork.map
 ```
 
@@ -225,6 +224,7 @@ newyork.map
 #install.packages("data.table")
 #install.packages("tidyverse")
 #devtools::install_github("dkahle/ggmap", ref = "tidyup", force=TRUE)
+
 ```
 
 
