@@ -87,13 +87,13 @@ ggplot(data=airbnb, aes(price)) +
                  fill="light blue", 
                  alpha = .7) + # opacity
   labs(x="Price", y="Frequency") +
-  labs(title="Histogram of AirBnB Price") 
+  labs(title="Histogram of AirBnB Price (All Observations)") 
 ```
 
 ## qqplot for Price (All Observations)
 ```{r, results='markup'}
-qqnorm(airbnb$price, pch = 20, main = "Q-Q Plot for All AirBnB Prices")
-qqline(airbnb$price, col = "yellow", lwd = 2)
+qqnorm(airbnb$price, pch = 20, main = "Q-Q Plot for AirBnB Prices (All Observations)")
+qqline(airbnb$price, col = "black", lwd = 2)
 ```
 
 Price is not normally distributed, and ther appear to be a large number of outliers. If we remove those outliers, the distribution is close to normal. 
@@ -117,8 +117,8 @@ ggplot(data=airbnb_clean, aes(price)) +
 
 ## qqplot for Price (Outliers Removed)
 ```{r, results='markup'}
-qqnorm(airbnb_clean$price, pch = 20, main = "Q-Q Plot for All AirBnB Prices")
-qqline(airbnb_clean$price, col = "yellow", lwd = 2)
+qqnorm(airbnb_clean$price, pch = 20, main = "Q-Q Plot for AirBnB Prices (Outliers Removed)")
+qqline(airbnb_clean$price, col = "black", lwd = 2)
 ```
 
 
