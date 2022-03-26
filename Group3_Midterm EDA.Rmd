@@ -26,7 +26,7 @@ First, we read in the data and set it up for analysis. The data is mostly cleane
 
 Without doing anything, our dataset is as follows:
 
-```{r, results="asis"}
+```{r, results="markup"}
 # read in dataset
 airbnb <- data.frame(read.csv("NYC ABS.csv", header = TRUE))
 
@@ -54,13 +54,13 @@ airbnb_cor <- airbnb[ , c(10, 11, 12, 14, 15, 16)]
 
 After cleaning, our main dataset is described below:
 
-```{r, results = "asis"}
+```{r, results='markup'}
 str(airbnb)
 ```
 
 Our secondary dataset (used to measure correlation) is described below:
 
-```{r, results="asis"}
+```{r, results='markup'}
 str(airbnb_cor)
 ```
 
@@ -175,10 +175,10 @@ ggplot(airbnb, aes(price, factor(room_type))) +
   labs(title = "Room type vs Price Box plot", x = "Price", y = "Room Type") + xlim(0, 1000)
 ```
 
-## Map of NY by Price
+## Map of NY by Price Using `ggmap`
 
 ### AirBnB Density by Neighborhood Group and Price: 
-```{r}
+```{r, results = 'markup'}
 #Load the library
 library(ggplot2)
 library(ggmap)
@@ -225,9 +225,47 @@ library(ggmap)
 library(tmaptools)
 library(tidyr)
 ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("New York")$bbox))), zoom = 10)) + 
-  geom_point(data = airbnb_map_full, aes(x = longitude, y = latitude, colour = price, size = count), alpha = 0.5) + scale_colour_gradientn(colours=rainbow(3))
-  
+  geom_point(data = airbnb_map_full, aes(x = longitude, y = latitude, colour = price, size = count), alpha = 0.5) + 
+  scale_colour_gradientn(colours=rainbow(3)) +
+  labs(title = "Average AirBnb Price by Neighborhood")
 ```
+
+## Map of AirBnbs in NY Using `plotly`
+
+```{r, results = 'markup'}
+#install.packages("plotly")
+library(plotly)
+
+fig <- airbnb
+
+fig <- fig %>%
+
+  plot_ly(
+
+    lat = ~latitude,
+
+    lon = ~longitude,
+
+    marker = list(color = "blue"),
+
+    type = 'scattermapbox') 
+
+fig <- fig %>%
+
+  layout(
+
+    mapbox = list(
+
+      style = 'open-street-map',
+
+      zoom =7,
+
+      center = list(lon = -74, lat = 40.6))) 
+
+
+fig
+```
+
 # Section IV: Correlation and ANOVA Tests
 
 ## Correlation
