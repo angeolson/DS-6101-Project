@@ -70,6 +70,7 @@ Our dataset has `r nrow(airbnb)` observations.
 
 ```{r, results = "markup", echo = F}
 xkablesummary(airbnb)
+xkablesummary(airbnb_cor)
 ```
 
 
