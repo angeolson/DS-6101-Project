@@ -152,12 +152,11 @@ ggplot(airbnb_cor, aes(x = calculated_host_listings_count)) +
 
 ```{r, results = 'markup'}
 library(ggplot2)
-ggplot(airbnb_cor, aes(x = airbnb$price)) + 
-  geom_histogram(color="blue", fill="yellowgreen") + 
-    labs( title = "Histogram for Airbnb Price", 
+ggplot(data = airbnb, aes(x = airbnb$price)) +  
+  geom_histogram(bins=100, color="blue", fill="yellowgreen") + 
+    labs(title = "Histogram for Airbnb Price", 
         x = "Airbnb Price", 
-         y = "Frequency") +
-           theme_dark()
+         y = "Frequency")
 ```
 
 
