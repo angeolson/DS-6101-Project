@@ -75,7 +75,7 @@ xkablesummary(airbnb)
 
 # Section III: Plots and Graphs
 
-## Histogram for Price
+## Histogram for Price (All Observations)
 
 First, we look at the price distribution for the entire dataset:
 
@@ -90,24 +90,35 @@ ggplot(data=airbnb, aes(price)) +
   labs(title="Histogram of AirBnB Price") 
 ```
 
-## qqplot for Price
+## qqplot for Price (All Observations)
 ```{r, results='markup'}
-qqnorm(airbnb$price, pch = 20, main = "Q-Q Plot for all airbnb Prices")
+qqnorm(airbnb$price, pch = 20, main = "Q-Q Plot for All AirBnB Prices")
 qqline(airbnb$price, col = "yellow", lwd = 2)
 ```
 
-Price is not normally distributed. 
+Price is not normally distributed, and ther appear to be a large number of outliers. If we remove those outliers, the distribution is close to normal. 
 
+```{r}
+airbnb_clean = outlierKD2(airbnb, price, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
+```
+
+## Histogram for Price (Outliers Removed)
 
 ```{r, results='markup'}
 library(ggplot2)
-ggplot(data=airbnb, aes(price)) + 
+ggplot(data=airbnb_clean, aes(price)) + 
   geom_histogram(bins=100, 
                  col="dark blue", 
                  fill="light blue", 
                  alpha = .7) + # opacity
   labs(x="Price", y="Frequency") +
-  labs(title="Histogram of AirBnB Price") 
+  labs(title="Histogram of AirBnB Price (Outliers Removed)") 
+```
+
+## qqplot for Price (Outliers Removed)
+```{r, results='markup'}
+qqnorm(airbnb_clean$price, pch = 20, main = "Q-Q Plot for All AirBnB Prices")
+qqline(airbnb_clean$price, col = "yellow", lwd = 2)
 ```
 
 
@@ -150,7 +161,7 @@ Note: outliers extend past $1,000 per night, graph truncated for visibility and 
 library(ggplot2)
 ggplot(airbnb, aes(price, factor(neighbourhood_group))) + 
   geom_boxplot(color = "black", fill = c("light green", "pink","light blue", "yellow", "red")) +
-  labs(title = "Neighbourhood group vs Price Box plot", x = "Price", y = "Neighbourhood") +
+  labs(title = "Neighbourhood Group vs Price Box plot", x = "Price", y = "Neighbourhood") +
   xlim(0, 1000)
 ```
 
