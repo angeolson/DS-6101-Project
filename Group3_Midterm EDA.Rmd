@@ -66,31 +66,44 @@ str(airbnb_cor)
 
 # Section II: Descriptive Statistics
 
-Our dataset has `r nrow(airbnb)` observations. The continuous variables are described below:
+Our dataset has `r nrow(airbnb)` observations. The continuous variables are described below (NA values omitted):
 
 ```{r, results = "markup", echo = F}
-xkablesummary(airbnb_cor)
+xkablesummary(na.omit(airbnb_cor))
+```
 
+```{r}
 library(DescTools)
-for (i in 1:ncol(airbnb_cor))
-  {mod_val <- Mode(airbnb_cor[,i])
-  cat(i, ": ",mod_val,"\n")}
-
-sd(airbnb_cor$price)
-sd(airbnb_cor$minimum_nights)
-sd(airbnb_cor$number_of_reviews)
-sd(airbnb_cor$reviews_per_month)
-sd(airbnb_cor$calculated_host_listings_count)
-sd(airbnb_cor$availability_365)
 ```
 
 The standard deviations of the continuous variables are as follows:
-*`price`: `r sd(airbnb_cor$price)`
-*`minimum_nights`: `r sd(airbnb_cor$minimum_nights)`
-*`number_of_reviews`: `r sd(airbnb_cor$number_of_reviews)`
-*`reviews_per_month`: `r sd(airbnb_cor$reviews_per_month)`
-*`calcualted_host_listings_count`: `r sd(airbnb_cor$calculated_host_listings_count)`
-*`availability_365`: `r sd(airbnb_cor$availability_365)`
+
+*   `price`: `r sd(airbnb_cor$price)`
+*   `minimum_nights`: `r sd(airbnb_cor$minimum_nights)`
+*   `number_of_reviews`: `r sd(airbnb_cor$number_of_reviews)`
+*   `reviews_per_month`: `r sd(na.omit(airbnb_cor$reviews_per_month))`
+*   `calcualted_host_listings_count`: `r sd(airbnb_cor$calculated_host_listings_count)`
+*   `availability_365`: `r sd(airbnb_cor$availability_365)`
+
+The modes of the continuous variables are as follows:
+
+*   `price`: `r Mode(airbnb_cor$price)`
+*   `minimum_nights`: `r Mode(airbnb_cor$minimum_nights)`
+*   `number_of_reviews`: `r Mode(airbnb_cor$number_of_reviews)`
+*   `reviews_per_month`: `r Mode(na.omit(airbnb_cor$reviews_per_month))`
+*   `calcualted_host_listings_count`: `r Mode(airbnb_cor$calculated_host_listings_count)`
+*   `availability_365`: `r Mode(airbnb_cor$availability_365)`
+
+The main categorical variables of interest are counted below:
+
+```{r, results='markup'}
+
+#neighborhood group
+xkabledply(table(airbnb$neighbourhood_group))
+
+#room_type
+xkabledply(table(airbnb$room_type))
+```
 
 # Section III: Plots and Graphs
 
