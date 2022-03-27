@@ -66,12 +66,44 @@ str(airbnb_cor)
 
 # Section II: Descriptive Statistics
 
-Our dataset has `r nrow(airbnb)` observations. 
+Our dataset has `r nrow(airbnb)` observations. The continuous variables are described below (NA values omitted):
 
 ```{r, results = "markup", echo = F}
-xkablesummary(airbnb)
+xkablesummary(na.omit(airbnb_cor))
 ```
 
+```{r}
+library(DescTools)
+```
+
+The standard deviations of the continuous variables are as follows:
+
+*   `price`: `r sd(airbnb_cor$price)`
+*   `minimum_nights`: `r sd(airbnb_cor$minimum_nights)`
+*   `number_of_reviews`: `r sd(airbnb_cor$number_of_reviews)`
+*   `reviews_per_month`: `r sd(na.omit(airbnb_cor$reviews_per_month))`
+*   `calcualted_host_listings_count`: `r sd(airbnb_cor$calculated_host_listings_count)`
+*   `availability_365`: `r sd(airbnb_cor$availability_365)`
+
+The modes of the continuous variables are as follows:
+
+*   `price`: `r Mode(airbnb_cor$price)`
+*   `minimum_nights`: `r Mode(airbnb_cor$minimum_nights)`
+*   `number_of_reviews`: `r Mode(airbnb_cor$number_of_reviews)`
+*   `reviews_per_month`: `r Mode(na.omit(airbnb_cor$reviews_per_month))`
+*   `calcualted_host_listings_count`: `r Mode(airbnb_cor$calculated_host_listings_count)`
+*   `availability_365`: `r Mode(airbnb_cor$availability_365)`
+
+The main categorical variables of interest are counted below:
+
+```{r, results='markup'}
+
+#neighborhood group
+xkabledply(table(airbnb$neighbourhood_group))
+
+#room_type
+xkabledply(table(airbnb$room_type))
+```
 
 # Section III: Plots and Graphs
 
@@ -93,7 +125,7 @@ ggplot(data=airbnb, aes(price)) +
 ```
 
 
-## qqplot for Price (All Observations)
+## Q-Q plot for Price (All Observations)
 ```{r, results='markup'}
 qqnorm(airbnb$price, pch = 20, main = "Q-Q Plot for AirBnB Prices (All Observations)")
 qqline(airbnb$price, col = "black", lwd = 2)
@@ -101,7 +133,7 @@ qqline(airbnb$price, col = "black", lwd = 2)
 
 Price is not normally distributed, and there appear to be a large number of outliers. If we remove those outliers, the distribution is close to normal. 
 
-```{r}
+```{r, results='markup'}
 airbnb_clean = outlierKD2(airbnb, price, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
 ```
 
@@ -120,7 +152,7 @@ ggplot(data = airbnb_clean, aes(price)) +
      theme_grey()
 ```
 
-## qqplot for Price (Outliers Removed)
+## Q-Q plot for Price (Outliers Removed)
 ```{r, results='markup'}
 qqnorm(airbnb_clean$price, pch = 20, main = "Q-Q Plot for AirBnB Prices (Outliers Removed)")
 qqline(airbnb_clean$price, col = "black", lwd = 2)
@@ -131,7 +163,7 @@ qqline(airbnb_clean$price, col = "black", lwd = 2)
 
 Scatter plot for `price` and `number of reviews` without any transformations: 
 
-```{r}
+```{r, results='markup'}
 library(ggplot2)
 library(ggpubr)
 ggplot(airbnb, aes(x=price, y=number_of_reviews)) + 
@@ -147,7 +179,7 @@ There appears to be a an exponential relationship (exponential decline) between 
 
 Scatter plot for `price` and `number of reviews` taking the $$\log (reviews)$$ to show linear trend: 
 
-```{r}
+```{r, results='markup'}
 library(ggplot2)
 library(ggpubr)
 ggplot(airbnb, aes(x=price, y=log(number_of_reviews))) + 
@@ -165,8 +197,8 @@ Note: outliers extend past $1,000 per night, graph truncated for visibility and 
 ```{r, results = "markup"}
 library(ggplot2)
 ggplot(airbnb, aes(price, factor(neighbourhood_group))) + 
-  geom_boxplot(color = "black", fill = c("light green", "pink","light blue", "yellow", "red")) +
-  labs(title = "Neighbourhood Group vs Price Box plot", x = "Price", y = "Neighbourhood") +
+  geom_boxplot(color = "black", fill = c("light green", "pink","light blue", "yellow", "orange")) +
+  labs(title = "Neighbourhood Group vs Price Box plot", x = "Price", y = "Neighbourhood group") +
   xlim(0, 1000)
 ```
 
@@ -180,31 +212,46 @@ ggplot(airbnb, aes(price, factor(room_type))) +
   labs(title = "Room type vs Price Box plot", x = "Price", y = "Room Type") + xlim(0, 1000)
 ```
 
-## Map of NY by Price Using `ggmap`
 
-### AirBnB Density by Neighborhood Group and Price: 
+## Map of AirBnbs in NY by Neighbourhood group
 ```{r, results = 'markup'}
-#Load the library
-library(ggplot2)
-library(ggmap)
+#install.packages("plotly")
+library(plotly)
 
-#Set your API Key
-ggmap::register_google(key = "AIzaSyBuM2zUJqBlgjcki9tYS1emZr3awesSqac")
+fig <- airbnb
 
-#map by price 
-newyork.map <- get_map("New York", zoom = 10, scale = 1, maptype = "terrain", color = "bw")
-ggmap(newyork.map) + geom_point(data=airbnb, aes(x=longitude, y=latitude, color = price), size=0.2) + scale_colour_gradientn(colours=rainbow(3))
+fig <- fig %>%
+
+  plot_ly(
+
+    lat = ~latitude,
+
+    lon = ~longitude,
+
+    color = ~neighbourhood_group,
+    
+    colors = "Set1",
+
+    type = 'scattermapbox')
+
+fig <- fig %>%
+
+  layout(
+
+    mapbox = list(
+
+      style = 'open-street-map',
+
+      zoom =9,
+
+      center = list(lon = -73.97, lat = 40.71))) 
+
+
+fig
 ```
 
-```{r, results='markup'}
-#library(ggmap)
-#library(tmaptools)
-#library(tidyr)
-#ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("New York")$bbox))), zoom = 10)) + 
-#  geom_point(data = airbnb, aes(x = longitude, y = latitude, colour = neighbourhood_group, size = price), alpha = 0.2)
-```
 
-### AirBnB Average Price and Number of Listings by Neighborhood:
+## AirBnB Average Price and Number of Listings by Neighborhood:
 
 ```{r}
 # create subset just for aggregating by mean
@@ -225,50 +272,19 @@ all.equal(airbnb_map_full[, 1], airbnb_map_full[, 3]) # true!
 airbnb_map_full <- airbnb_map_full[, -3]
 ```
 
-```{r, results='markup'}
-library(ggmap)
-library(tmaptools)
-library(tidyr)
-ggmap(get_stamenmap(rbind(as.numeric(paste(geocode_OSM("New York")$bbox))), zoom = 10)) + 
-  geom_point(data = airbnb_map_full, aes(x = longitude, y = latitude, colour = price, size = count), alpha = 0.5) + 
-  scale_colour_gradientn(colours=rainbow(3)) +
-  labs(title = "Average AirBnb Price by Neighborhood")
-```
-
-## Map of AirBnbs in NY Using `plotly`
-
 ```{r, results = 'markup'}
-#install.packages("plotly")
-library(plotly)
+#Load the library
+library(ggplot2)
+library(ggmap)
 
-fig <- airbnb
+#Set your API Key
+ggmap::register_google(key = "AIzaSyBuM2zUJqBlgjcki9tYS1emZr3awesSqac")
 
-fig <- fig %>%
-
-  plot_ly(
-
-    lat = ~latitude,
-
-    lon = ~longitude,
-
-    marker = list(color = "blue"),
-
-    type = 'scattermapbox') 
-
-fig <- fig %>%
-
-  layout(
-
-    mapbox = list(
-
-      style = 'open-street-map',
-
-      zoom =7,
-
-      center = list(lon = -74, lat = 40.6))) 
-
-
-fig
+#map by price 
+newyork.map <- get_map("New York", zoom = 10, scale = 1, maptype = "terrain")  
+ggmap(newyork.map) +  geom_point(data = airbnb_map_full, aes(x = longitude, y = latitude, colour = price, size = count), alpha = 0.5) + 
+  scale_colour_gradientn(colours=rainbow(3)) +
+  labs(title = "Average AirBnb Price and Density by Neighborhood", x = "Longitude", y = "Latitude")
 ```
 
 # Section IV: Correlation and ANOVA Tests
