@@ -91,7 +91,7 @@ ggplot(data=airbnb, aes(price)) +
 ```
 
 
-## qqplot for Price (All Observations)
+## Q-Q plot for Price (All Observations)
 ```{r, results='markup'}
 qqnorm(airbnb$price, pch = 20, main = "Q-Q Plot for AirBnB Prices (All Observations)")
 qqline(airbnb$price, col = "black", lwd = 2)
@@ -118,7 +118,7 @@ ggplot(data = airbnb_clean, aes(price)) +
      theme_grey()
 ```
 
-## qqplot for Price (Outliers Removed)
+## Q-Q plot for Price (Outliers Removed)
 ```{r, results='markup'}
 qqnorm(airbnb_clean$price, pch = 20, main = "Q-Q Plot for AirBnB Prices (Outliers Removed)")
 qqline(airbnb_clean$price, col = "black", lwd = 2)
@@ -177,8 +177,9 @@ ggplot(airbnb, aes(price, factor(room_type))) +
   geom_boxplot(width = 0.7, color = "black", fill = c("light green", "yellow","light blue")) +
   labs(title = "Room type vs Price Box plot", x = "Price", y = "Room Type") + xlim(0, 1000)
 ```
-## Map of AirBnbs in NY by Neighbourhood group
 
+
+## Map of AirBnbs in NY by Neighbourhood group
 ```{r, results = 'markup'}
 #install.packages("plotly")
 library(plotly)
