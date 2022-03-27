@@ -282,7 +282,7 @@ ggmap::register_google(key = "AIzaSyBuM2zUJqBlgjcki9tYS1emZr3awesSqac")
 newyork.map <- get_map("New York", zoom = 10, scale = 1, maptype = "terrain")  
 ggmap(newyork.map) +  geom_point(data = airbnb_map_full, aes(x = longitude, y = latitude, colour = price, size = count), alpha = 0.5) + 
   scale_colour_gradientn(colours=rainbow(3)) +
-  labs(title = "Average AirBnb Price by Neighborhood")
+  labs(title = "Average AirBnb Price and Density by Neighborhood", x = "Longitude", y = "Latitude")
 ```
 
 # Section IV: Correlation and ANOVA Tests
