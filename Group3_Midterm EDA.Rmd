@@ -71,6 +71,16 @@ Our dataset has `r nrow(airbnb)` observations.
 ```{r, results = "markup", echo = F}
 xkablesummary(airbnb)
 xkablesummary(airbnb_cor)
+library(DescTools)
+for (i in 1:ncol(airbnb_cor))
+  {mod_val <- Mode(airbnb_cor[,i])
+  cat(i, ": ",mod_val,"\n")}
+sd(airbnb_cor$price)
+sd(airbnb_cor$minimum_nights)
+sd(airbnb_cor$number_of_reviews)
+sd(airbnb_cor$reviews_per_month)
+sd(airbnb_cor$calculated_host_listings_count)
+sd(airbnb_cor$availability_365)
 ```
 
 
