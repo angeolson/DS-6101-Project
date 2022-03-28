@@ -170,8 +170,7 @@ ggplot(airbnb, aes(x=price, y=number_of_reviews)) +
   ggtitle("Number of Reviews vs Price Scatter Plot") + 
   xlab("Price ($)") + ylab("Number Of Reviews") + 
   geom_point(size = 1, shape = 18, color = "black") + 
-  geom_smooth(method = lm, se = FALSE, color = "yellow", size = 1.2) + theme_bw() + 
-  stat_cor(method =  "pearson", label.x = 6500 )
+  theme_bw()
 ```
 
 There appears to be a an exponential relationship (exponential decline) between `price` and `number of reviews`. 
@@ -184,10 +183,8 @@ library(ggplot2)
 library(ggpubr)
 ggplot(airbnb, aes(x=price, y=log(number_of_reviews))) + 
   ggtitle("Number of Reviews vs Price Scatter Plot") + 
-  xlab("Price ($)") + ylab("Number Of Reviews") + 
-  geom_point(size = 1, shape = 18, color = "black") + 
-  geom_smooth(method = lm, se = FALSE, color = "yellow", size = 1.2) + theme_bw() + 
-  stat_cor(method =  "pearson", label.x = 6500 )
+  xlab("Price ($)") + ylab("Number Of Reviews (Natural Log)") + 
+  geom_point(size = 1, shape = 18, color = "black")
 ```
 
 ## Box Plot for Price and Neighborhood Group
