@@ -114,12 +114,14 @@ First, we look at the price distribution for the entire dataset:
 ```{r, results = 'markup'}
 library(ggplot2)
 ggplot(data=airbnb, aes(price)) + 
-  geom_histogram(bins=100, 
-                 col="dark blue", 
-                 fill="light blue", 
-                 alpha = .7) + # opacity
-  labs(x="Price", y="Frequency") +
-  labs(title="Histogram of AirBnB Price (All Observations)") 
+  geom_histogram(bins = 100, 
+                 col  = "dark blue", 
+                 fill = "light blue", 
+                alpha = .7) + # opacity
+    labs(title = "Histogram of AirBnB Price (All Observations)", 
+             x = "AirBnB Price", 
+             y = "Frequency") +
+     theme_grey()
 ```
 
 
