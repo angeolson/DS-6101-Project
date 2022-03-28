@@ -122,6 +122,7 @@ ggplot(data=airbnb, aes(price)) +
              x = "AirBnB Price", 
              y = "Frequency") +
      theme_grey()
+summary(airbnb$price)
 ```
 
 
