@@ -286,34 +286,47 @@ ggmap(newyork.map) +  geom_point(data = airbnb_map_full, aes(x = longitude, y = 
 
 # Section IV: Correlation and ANOVA Tests
 
-## Correlation
-### Correlation Matrix for Airbnb Data
+## 4.1: Correlation
+### 4.1.1: Correlation Matrix for Airbnb Data
+
+To answer our SMART question, we needed to investigate if any variables other than location or room type seemed to be related to the variable of interest, `price`. The other variables identified are as follows:
+
+* `minimum_nights`
+* `number_of_reviews`
+* `reviews_per_month`
+* `calculated_host_listings_count`
+* `availability_365`
+
+As all of these variables are continuous, we have chosen to look at correlation. It is important to note that correlation does not imply causation. However, for the purposes of our SMART question, if for example a variable $x$ is highly and positively correlated with price, we can say that the presence of $x$ is associated with an increase in price and that will be sufficient.
+
+Below we have a correlation matrix and accompanying correlation plot using all complete observations (note: `reviews per month` contains NA values).
+
 ```{r, results = "markup"}
 loadPkg("faraway")
 loadPkg("corrplot")
-xkabledply(cor(airbnb_cor))
+xkabledply(cor(airbnb_cor, use = "complete.obs"))
 airbnb_corplot = cor(airbnb_cor, use = "complete.obs")
 corrplot(airbnb_corplot, method = "circle")
 ```
 
-No strong correlations with price, but `minimum_nights` and `availability_365`, `number_of_reviews` and `availability_365`, and `calculated_host_listings_count` and `availability_365` show some evidence of positive correlation. 
+As shown, no variable of interest shows strong Pearson correlation with price, but `minimum_nights` and `availability_365`, `number_of_reviews` and `availability_365`, and `calculated_host_listings_count` and `availability_365` show some evidence of positive correlation. 
 
-### Correlation Between Reviews per Month and Total Reviews
+Additionally, as expected, we see strong correlation between the total number of reviews and the reviews per month. This makes sense; we would expect that the more reviews in total a unit has, the more reviews it receives per month. This correlation is significantly significant, as shown in subsection 4.1.2.
+
+While the correlation between `price` and `number_of_reviews` is not high, as shown from our previous scatterplots there does appear to be an exponential relationship between the two variables, with the highest-priced units receiving very few reviews total. In subsection 4.1.3, we see that this relationship is not strong but that there is some statistically significant evidence of correlation. This relationship makes sense; number of reviews can be a proxy for total number of stays in the unit, and one would expect that expensive units are stayed in less frequently. 
+
+### 4.1.2: Correlation Between Reviews per Month and Total Reviews
 
 ```{r, results = "markup"}
 cor.test(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews)
 ```
 
-As expected, correlated since reviews per month is a function of total number of reviews so do not need to look at both.
 
-
-### Correlation Between Number of Reviews (Y) and Price (X) 
+### 4.1.3: Correlation Between Number of Reviews (Y) and Price (X) 
 
 ```{r, results = "markup"}
 cor.test(y=airbnb$number_of_reviews, x=airbnb$price)
 ```
-
-No evidence of strong (linear) correlation, but evidence of an inverse relationship between price and reviews (higher price, fewer reviews--possibly because of fewer stays, for which review number is probably a good proxy)
 
 
 ## ANOVA Tests
