@@ -329,9 +329,9 @@ cor.test(y=airbnb$number_of_reviews, x=airbnb$price)
 ```
 
 
-## ANOVA Tests
+## 4.2: ANOVA Tests
 
-### Testing for Differences in Price by Neighborhood Group
+### 4.2.1: Testing for Differences in Price by Neighborhood Group
 
 ```{r, results = "markup"}
 #anova test for price and neighborhood groups
@@ -344,8 +344,14 @@ tukeyAoV_pg
 
 ```
 
+#### 4.2.1.1 Tukey HSD Results:
 
-### Testing for Differences in Price by Room Type
+At a statistically significant level with $\alpha = 0.05$, we see that there are statistically significant differences between Manhattan and all other boroughs, between Brooklyn and the Bronx, and between Queens and Brooklyn. Differences are not statically significant between Staten Island, Queens, and the Bronx.
+
+This aligns with our previous visual findings, that Manhattan appeared to the most expensive borough with Brooklyn coming in at second. In terms of using location to determine price, we can conclude that certain boroughs are more useful predictors than others. For example, knowing that a unit is in Manhattan as opposed to in the Bronx would be useful, but with no other information, a unit in Staten Island may be priced roughly the same as a unit in Queens. Still, given that at least some locations are priced differently from each other, we can conclude that yes, location does have an effect on price. 
+
+
+### 4.2.2: Testing for Differences in Price by Room Type
 
 ```{r, results = "markup"}
 #anova test for price and room type
@@ -357,6 +363,9 @@ tukeyAoV_pr <- TukeyHSD(anova_price_room)
 tukeyAoV_pr
 ```
 
+#### 4.2.2.1 Tukey HSD Results:
+
+At a statistically significant level with $\alpha = 0.05$, we see that there are statistically significant differences across all room types. This lines up with our visual representations as well, where we saw that an entire home or apartment was significantly preferred (priced higher) than either room. While not as visually obvious, a private room is also priced statistically significantly higher than a shared room. We can conclude that room type does likely have an effect on price.
 
 
 
