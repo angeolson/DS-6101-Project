@@ -20,7 +20,21 @@ options(scientific=T, digits = 3)
 library(ezids)
 ```
 
-# Section I: Set-Up and Summary of the Dataset
+# Section I: Introduction
+
+## 1.1: Motivation and Previous Research
+
+[text goes here]
+
+## 1.2: SMART Question
+
+[text goes here]
+
+## 1.3: Description of the Dataset
+
+[text goes here]
+
+## 1.3.1: Initial Dataset Cleaning 
 
 First, we read in the data and set it up for analysis. The data is mostly cleaned, but we need a subset for calculating correlation, we need to change some data to be categorical, some data to be numerical, and we need to fix the dates so that they aren't read in as characters.
 
@@ -64,7 +78,7 @@ Our secondary dataset (used to measure correlation) is described below:
 str(airbnb_cor)
 ```
 
-# Section II: Descriptive Statistics
+### 1.3.2: Descriptive Statistics
 
 Our dataset has `r nrow(airbnb)` observations. The continuous variables are described below (NA values omitted):
 
@@ -105,9 +119,16 @@ xkabledply(table(airbnb$neighbourhood_group))
 xkabledply(table(airbnb$room_type))
 ```
 
-# Section III: Plots and Graphs
+## 1.4: Overview of Tests and Analysis Conducted 
 
-## Histogram for Price (All Observations)
+[text goes here]
+
+
+# Section II: Exploratory Data Analysis 
+
+## 2.1: Normality Plots
+
+### 2.1.1: Histogram for Price (All Observations)
 
 First, we look at the price distribution for the entire dataset:
 
@@ -125,7 +146,7 @@ ggplot(data=airbnb, aes(price)) +
 ```
 
 
-## Q-Q plot for Price (All Observations)
+### 2.1.2: Q-Q plot for Price (All Observations)
 ```{r, results='markup'}
 qqnorm(airbnb$price, pch = 20, main = "Q-Q Plot for AirBnB Prices (All Observations)")
 qqline(airbnb$price, col = "black", lwd = 2)
@@ -137,7 +158,7 @@ Price is not normally distributed, and there appear to be a large number of outl
 airbnb_clean = outlierKD2(airbnb, price, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
 ```
 
-## Histogram for Price (Outliers Removed)
+### 2.1.3: Histogram for Price (Outliers Removed)
 
 ```{r, results = 'markup'}
 library(ggplot2)
@@ -152,14 +173,14 @@ ggplot(data = airbnb_clean, aes(price)) +
      theme_grey()
 ```
 
-## Q-Q plot for Price (Outliers Removed)
+### 2.1.4: Q-Q plot for Price (Outliers Removed)
 ```{r, results='markup'}
 qqnorm(airbnb_clean$price, pch = 20, main = "Q-Q Plot for AirBnB Prices (Outliers Removed)")
 qqline(airbnb_clean$price, col = "black", lwd = 2)
 ```
 
-
-## Scatter Plot for Price and Number of Reviews
+## 2.2: Scatter and Box Plots
+### 2.2.1: Scatter Plot for Price and Number of Reviews
 
 Scatter plot for `price` and `number of reviews` without any transformations: 
 
@@ -175,7 +196,6 @@ ggplot(airbnb, aes(x=price, y=number_of_reviews)) +
 
 There appears to be a an exponential relationship (exponential decline) between `price` and `number of reviews`. 
 
-
 Scatter plot for `price` and `number of reviews` taking the $$\log (reviews)$$ to show linear trend: 
 
 ```{r, results='markup'}
@@ -187,7 +207,7 @@ ggplot(airbnb, aes(x=price, y=log(number_of_reviews))) +
   geom_point(size = 1, shape = 18, color = "black")
 ```
 
-## Box Plot for Price and Neighborhood Group
+### 2.2.2: Box Plot for Price and Neighborhood Group
 
 Note: outliers extend past $1,000 per night, graph truncated for visibility and interpretation. 
 
@@ -199,7 +219,7 @@ ggplot(airbnb, aes(price, factor(neighbourhood_group))) +
   xlim(0, 1000)
 ```
 
-## Box Plot for Price and Room Type
+### 2.2.3: Box Plot for Price and Room Type
 Note: outliers extend past $1,000 per night, graph truncated for visibility and interpretation. 
 
 ```{r, results = "markup"}
@@ -209,8 +229,9 @@ ggplot(airbnb, aes(price, factor(room_type))) +
   labs(title = "Room type vs Price Box plot", x = "Price", y = "Room Type") + xlim(0, 1000)
 ```
 
+## 2.3: Maps
 
-## Map of AirBnbs in NY by Neighbourhood group
+### 2.3.1: Map of AirBnbs in NY by Neighbourhood group
 ```{r, results = 'markup'}
 #install.packages("plotly")
 library(plotly)
@@ -248,7 +269,7 @@ fig
 ```
 
 
-## AirBnB Average Price and Number of Listings by Neighborhood:
+### 2.3.2: AirBnB Average Price and Number of Listings by Neighborhood:
 
 ```{r}
 # create subset just for aggregating by mean
@@ -284,10 +305,10 @@ ggmap(newyork.map) +  geom_point(data = airbnb_map_full, aes(x = longitude, y = 
   labs(title = "Average AirBnb Price and Density by Neighborhood", x = "Longitude", y = "Latitude")
 ```
 
-# Section IV: Correlation and ANOVA Tests
+# Section III: Correlation and ANOVA Tests
 
-## 4.1: Correlation
-### 4.1.1: Correlation Matrix for Airbnb Data
+## 3.1: Correlation
+### 3.1.1: Correlation Matrix for Airbnb Data
 
 To answer our SMART question, we needed to investigate if any variables other than location or room type seemed to be related to the variable of interest, `price`. The other variables identified are as follows:
 
@@ -311,27 +332,27 @@ corrplot(airbnb_corplot, method = "circle")
 
 As shown, no variable of interest shows strong Pearson correlation with price, but `minimum_nights` and `availability_365`, `number_of_reviews` and `availability_365`, and `calculated_host_listings_count` and `availability_365` show some evidence of positive correlation. 
 
-Additionally, as expected, we see strong correlation between the total number of reviews and the reviews per month. This makes sense; we would expect that the more reviews in total a unit has, the more reviews it receives per month. This correlation is significantly significant, as shown in subsection 4.1.2.
+Additionally, as expected, we see strong correlation between the total number of reviews and the reviews per month. This makes sense; we would expect that the more reviews in total a unit has, the more reviews it receives per month. This correlation is significantly significant, as shown in subsection 3.1.2.
 
 While the correlation between `price` and `number_of_reviews` is not high, as shown from our previous scatterplots there does appear to be an exponential relationship between the two variables, with the highest-priced units receiving very few reviews total. In subsection 4.1.3, we see that this relationship is not strong but that there is some statistically significant evidence of correlation. This relationship makes sense; number of reviews can be a proxy for total number of stays in the unit, and one would expect that expensive units are stayed in less frequently. 
 
-### 4.1.2: Correlation Between Reviews per Month and Total Reviews
+### 3.1.2: Correlation Between Reviews per Month and Total Reviews
 
 ```{r, results = "markup"}
 cor.test(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews)
 ```
 
 
-### 4.1.3: Correlation Between Number of Reviews (Y) and Price (X) 
+### 3.1.3: Correlation Between Number of Reviews (Y) and Price (X) 
 
 ```{r, results = "markup"}
 cor.test(y=airbnb$number_of_reviews, x=airbnb$price)
 ```
 
 
-## 4.2: ANOVA Tests
+## 3.2: ANOVA Tests
 
-### 4.2.1: Testing for Differences in Price by Neighborhood Group
+### 3.2.1: Testing for Differences in Price by Neighborhood Group
 
 ```{r, results = "markup"}
 #anova test for price and neighborhood groups
@@ -344,14 +365,14 @@ tukeyAoV_pg
 
 ```
 
-#### 4.2.1.1 Tukey HSD Results:
+#### 3.2.1.1 Tukey HSD Results:
 
 At a statistically significant level with $\alpha = 0.05$, we see that there are statistically significant differences between Manhattan and all other boroughs, between Brooklyn and the Bronx, and between Queens and Brooklyn. Differences are not statically significant between Staten Island, Queens, and the Bronx.
 
 This aligns with our previous visual findings, that Manhattan appeared to the most expensive borough with Brooklyn coming in at second. In terms of using location to determine price, we can conclude that certain boroughs are more useful predictors than others. For example, knowing that a unit is in Manhattan as opposed to in the Bronx would be useful, but with no other information, a unit in Staten Island may be priced roughly the same as a unit in Queens. Still, given that at least some locations are priced differently from each other, we can conclude that yes, location does have an effect on price. 
 
 
-### 4.2.2: Testing for Differences in Price by Room Type
+### 3.2.2: Testing for Differences in Price by Room Type
 
 ```{r, results = "markup"}
 #anova test for price and room type
@@ -367,6 +388,14 @@ tukeyAoV_pr
 
 At a statistically significant level with $\alpha = 0.05$, we see that there are statistically significant differences across all room types. This lines up with our visual representations as well, where we saw that an entire home or apartment was significantly preferred (priced higher) than either room. While not as visually obvious, a private room is also priced statistically significantly higher than a shared room. We can conclude that room type does likely have an effect on price.
 
+
+# Section IV: Conclusion
+
+## 4.1: Analysis of SMART Question
+
+## 4.2: Limitations of Dataset
+
+## 4.3: Next Steps 
 
 
 
