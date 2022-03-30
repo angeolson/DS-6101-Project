@@ -1,5 +1,5 @@
 ---
-title: "Midterm EDA"
+title: "Midterm Summary Paper"
 author: "Group 3: Pavani Samala, Ange Olson, Kowshik Bezawada, Meghana Gantla"
 date: "`r Sys.Date()`"
 output: 
@@ -124,7 +124,7 @@ xkabledply(table(airbnb$room_type))
 [text goes here]
 
 
-# Section II: Exploratory Data Analysis 
+# Section II: Exploratory Data Analysis (EDA)
 
 ## 2.1: Normality Plots
 
@@ -391,7 +391,27 @@ At a statistically significant level with $\alpha = 0.05$, we see that there are
 
 # Section IV: Conclusion
 
+To conclude, we found strong evidence during our EDA that price of an AirBnb unit differed based on both location (borough in New York City) and room type (full house/apartment, private room, and shared room). However, we found very little evidence that the continuous variables we selected for observation:
+
+* `minimum_nights`
+* `number_of_reviews`
+* `reviews_per_month`
+* `calculated_host_listings_count`
+* `availability_365`
+
+were related to price. To confirm these initial findings, we observed correlation values and conducted ANOVA and Tukey post-hoc tests. These statistical tests confirmed what we saw visually: price is correlated with our categorical variables `location` and `neighbourhood_group`, but that none of the continuous variable seem related. 
+
 ## 4.1: Analysis of SMART Question
+
+Our SMART Question, **"Is the price of an AirBnB in the 2010s strongly determined by location and room type, or are there other factors involved?"**, did not change after our EDA. However, we did find that contrary to what we had anticipated, no other factors we observed other than location or room type seemed to have a part in determining AirBnB unit price. 
+
+In terms of answering our question, we did succeed in determining that location and room type have an effect. However, is this effect strong? How do we determine strength?
+
+One way is to look at the significance of the differences in price by these categories, not only the statistical significance. For location, the actual difference between average prices in Manhattan versus the Bronx is large, estimated to fall in the range of 89.34-129.4 USD. In this example, not only is the difference statistically significant, but it is actually significant for the average AirBnb consumer or host. Similarly, the actual difference between prices for an entire room/apartment and private room is estimated to fall between 117.02-127 USD. This is also a significant price difference, when we consider that average prices by these categories all fall under 250 USD. 
+
+However, the differences between some boroughs are not statistically significant, and even a statistically significant difference like that between Brooklyn and Queens, which is estimated to fall between 15.2 and 34.58 USD, may not really be a significant price difference when compared to the mean. Similarly, the estimated difference between a shared room and a private room, estimated to fall between 3.27 and 36 USD, may also not be very significant when comparing to the mean.     
+
+Another way to measure strength is through the predictive power of these variables in a model. While not part of our midterm analysis, this method of measuring strength could be used in our future analysis. With the information we have currently, however, we can argue that overall, we did find strong relationships between location, room type, and price, given that at least some of the differences are statistically and contextually significant. 
 
 ## 4.2: Limitations of Dataset
 
