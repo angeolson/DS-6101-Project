@@ -419,11 +419,9 @@ Our dataset does face substantial limitations. We are missing data that would te
 
 ### 4.2.1: Home Value Limitations
 
-Some of the key factors that influence a total home value are missing from this dataset. While not all factors that affect home value for a buyer or long-term renter, such as schools, will affect those looking for an AirBnB, it is expected that costs that the owner of the AirBnB faced will be passed on to consumers to help the owner profit off of listing their unit. An example of this is square footage(1), or more importantly, actual usable space of this square footage. Especially in a city like New York(2), this comes at a premium and would be expected to have an impact on price.
+Some of the key factors that influence a total home value are missing from this dataset. While not all factors that affect home value for a buyer or long-term renter, such as schools, will affect those looking for an AirBnB, it is expected that costs that the owner of the AirBnB faced will be passed on to consumers to help the owner profit off of listing their unit. An example of this is square footage (Gomez, 2019), or more importantly, actual usable space of this square footage. Especially in a city like New York (Szekely,2016), this comes at a premium and would be expected to have an impact on price.
 
-**still need to cite, reminder to do this later**
-Cite 1: https://www.opendoor.com/w/blog/factors-that-influence-home-value
-Cite 2: https://www.rentcafe.com/blog/apartment-search-2/the-tiniest-rentals-in-new-york-city-if-%E2%89%88300-sq-ft-is-just-what-you-need/ 
+
 
 ### 4.2.2: AirBnB Data Limitations
 
@@ -445,6 +443,12 @@ Despite the limitations with our dataset, there are a few potential next steps w
 * Looking at the interaction between our categorical variables to see if specific room types in specific neighborhoods relate to price
 * Use the `last_review` variable to construct a new variable based on how many days ago (from the date the dataset was pulled)  the last review was as a proxy for demand 
 * Use the `name` variable to construct a new variable based on the length of the name to see if greater detail, i.e. longer name length, increases demand/price  
+
+### Works Cited
+
+Gomez, Joe. (2019). *8 critical factors that influence a home’s value*. Opendoor. https://www.opendoor.com/w/blog/factors-that-influence-home-value. 
+
+Szekely, Balazs. (2016). *The Tiniest Rentals in New York City—If ≈300 Sq. Ft. is Just What You Need*. Rentcafe. https://www.rentcafe.com/blog/apartment-search-2/the-tiniest-rentals-in-new-york-city-if-%E2%89%88300-sq-ft-is-just-what-you-need/ 
 
 
 
