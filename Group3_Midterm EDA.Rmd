@@ -157,6 +157,7 @@ ggplot(data=airbnb, aes(price)) +
              x = "AirBnB Price", 
              y = "Frequency") +
      theme_grey()
+summary(airbnb$price)
 ```
 
 
@@ -227,7 +228,7 @@ ggplot(airbnb, aes(x=price, y=log(number_of_reviews))) +
 
 Question: How does the location affect the Price? 
 Note: outliers extend past 1,000 per night, graph truncated for visibility and interpretation.
-We have 5 neighborhood groups in the dataset. From the visualization, it is apparent that the neighborhood in which Airbnb is located has significance in the price point determination. From the boxplot below, we can observe that Manhattan has the highest average price point (197 per night), and the Bronx has the least average price point (87.5$ per night). We have 221 different Neighbourhoods in the data that are part of these Neighbourhood groups.
+We have 5 neighborhood groups in the dataset. From the visualization, it is apparent that the neighborhood in which Airbnb is located has significance in the price point determination. From the boxplot below, we can observe that Manhattan has the highest average price point (197$ per night), and the Bronx has the least average price point (87.5$ per night). We have 221 different Neighbourhoods in the data that are part of these Neighbourhood groups.
 
 ```{r, results = "markup"}
 library(ggplot2)
@@ -252,6 +253,11 @@ ggplot(airbnb, aes(price, factor(room_type))) +
 ## 2.3: Maps
 
 ### 2.3.1: Map of AirBnbs in NY by Neighbourhood group
+
+Using the plotly library, we built maps to visualize the density of AirBnBs by neighborhood.
+By using latitude and longitude data from our dataset, we placed the AirBnB sites on the map and colored the different neighborhood groupings.
+We can tell the density of AirBnB's distribution by looking at the graphs, and we can see that Manhatten is the most dense and Staten Island is the least dense.
+
 ```{r, results = 'markup'}
 #install.packages("plotly")
 library(plotly)
@@ -277,6 +283,8 @@ fig
 
 
 ### 2.3.2: AirBnB Average Price and Number of Listings by Neighborhood:
+
+To sum up the average price and density, we used the ggpmap package to build this map, where the size of the point indicates the density of the neighborhood and the color indicates the average price. This map depicts how densely AirBnBs are located in Manhattan, as well as the average price charged, as indicated by the large circles.
 
 ```{r}
 # create subset just for aggregating by mean
@@ -325,7 +333,7 @@ To answer our SMART question, we needed to investigate if any variables other th
 * `calculated_host_listings_count`
 * `availability_365`
 
-As all of these variables are continuous, we have chosen to look at correlation. It is important to note that correlation does not imply causation. However, for the purposes of our SMART question, if for example a variable $x$ is highly and positively correlated with price, we can say that the presence of $x$ is associated with an increase in price and that will be sufficient.
+As all of these variables are continuous, we have chosen to look at correlation. It is important to note that correlation does not imply causation. However, for the purpose of our SMART question, if for example a variable $x$ is highly and positively correlated with price, we can say that the presence of $x$ is associated with an increase in price and that will be sufficient.
 
 Below we have a correlation matrix and accompanying correlation plot using all complete observations (note: `reviews per month` contains NA values).
 
