@@ -24,7 +24,7 @@ library(ezids)
 
 What started as an idea to rents airbeds in a bed and breakfast to strangers, became a 30 billion dollar business. The owners of Airbnb successfully combined affordability and adventure while creating a unique solution to the shortage of short-term housing. Airbnb has expanded to 191 countries and 65,000 cities. Understanding the success of this empire and how to improve it is a common interest among many. Previous research includes analyzing which Airbnb hosts are the busiest and why. In addition, research has been conducted to identify what draws people to different Airbnb locations. Seeing how the company's success stems from listing affordable units, we wanted to understand what factors influence Airbnb prices. We found a dataset on Kaggle ("New York City Airbnb Open Data") that includes information about Airbnbs in New York City. This dataset "describes the listing activity and metrics in NYC, NY for 2019"  with 48,895 observations across 16 different variables. It explores factors such as host information, location(neighbors, latitude, longitude), price, room type, reviews, and availability. This investigation can ultimately be shared with Airbnb and hosts to discuss how to increase revenues on rentals by prioritizing certain factors. 
 
-## 1.2: Initial Dataset Cleaning 
+## 1.1: Initial Dataset Cleaning 
 
 Before we began analysis, we took a few steps to clean the data. The data is mostly cleaned, but we created a subset for calculating correlation, changed some data to be categorical or numerical depending on the variable, and fixed the dates so that they aren't read in as characters.
 
@@ -91,7 +91,7 @@ str(airbnb_cor)
 `price`,`minimum_nights`,`number_of_reviews`,`reviews_per_month`,`calculated_host_listings_count`,and `availability_365` are the continuous variables that we used to measure correlations. 
 
 
-## 1.3: Descriptive Statistics
+## 1.2: Descriptive Statistics
 
 Our dataset has `r nrow(airbnb)` observations. The continuous variables are described below (NA values omitted):
 
