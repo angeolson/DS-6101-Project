@@ -55,6 +55,23 @@ airbnb[ , c(10, 11, 12, 14, 15, 16)] <- lapply(airbnb[ , c(10, 11, 12, 14, 15, 1
 # subset rows for correlation and cast as numeric
 airbnb_cor <- airbnb[ , c(10, 11, 12, 14, 15, 16)]
 ```
+1.`id` (listing Id)
+2.`name`
+3.`host_id``
+4.`host_name`
+5.`neighbourhood_group`
+6.`neighbourhood`
+7.`latitude`
+8.`longitude`
+9.`room_type`
+10.`price`
+11.`minimum_nights`
+12.`number_of_reviews`
+13.`last_review`
+14.`reviews_per_month`
+15.`calculated_host_listings_count`
+16.`availability_365`
+
 
 After cleaning, our main dataset is described below:
 
