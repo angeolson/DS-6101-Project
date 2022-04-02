@@ -120,8 +120,8 @@ xkabledply(table(airbnb$room_type))
 ```
 
 ## 1.4: Overview of Tests and Analysis Conducted 
+What started as an idea to rents airbeds in a bed and breakfast to strangers, became a 30 billion dollar business. The owners of Airbnb successfully combined affordability and adventure while creating a unique solution to the shortage of short-term housing. Airbnb has expanded to 191 countries and  65,000 cities. Seeing how the company's success stems from listing affordable units, we wanted to understand what factors influence Airbnb prices. We found a dataset on Kaggle ("New York City Airbnb Open Data") that includes information about Airbnbs in New York City. This dataset "describes the listing activity and metrics in NYC, NY for 2019"  with 48,895 observations across 16 different variables. It explores factors such as host information, location(neighbors, latitude, longitude), price, room type, reviews, and availability. This investigation can ultimately be shared with Airbnb and hosts to discuss how to increase revenues on rentals by prioritizing certain factors. 
 
-[text goes here]
 
 
 # Section II: Exploratory Data Analysis (EDA)
