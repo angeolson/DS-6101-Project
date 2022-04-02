@@ -22,10 +22,7 @@ library(ezids)
 
 # Section I: Introduction
 
-What started as an idea to rents airbeds in a bed and breakfast to strangers, became a 30 billion dollar business. The owners of Airbnb successfully combined affordability and adventure while creating a unique solution to the shortage of short-term housing. Airbnb has expanded to 191 countries and 65,000 cities. Understanding the success of this empire and how to improve it is a common interest among many. Previous research includes analyzing which Airbnb hosts are the busiest and why. In addition, research has been conducted to identify what draws people to different Airbnb locations.
-
-
-Seeing how the company's success stems from listing affordable units, we wanted to understand what factors influence Airbnb prices. We found a dataset on Kaggle ("New York City Airbnb Open Data") that includes information about Airbnbs in New York City. This dataset "describes the listing activity and metrics in NYC, NY for 2019"  with 48,895 observations across 16 different variables. It explores factors such as host information, location(neighbors, latitude, longitude), price, room type, reviews, and availability. This investigation can ultimately be shared with Airbnb and hosts to discuss how to increase revenues on rentals by prioritizing certain factors. 
+What started as an idea to rents airbeds in a bed and breakfast to strangers, became a 30 billion dollar business. The owners of Airbnb successfully combined affordability and adventure while creating a unique solution to the shortage of short-term housing. Airbnb has expanded to 191 countries and 65,000 cities. Understanding the success of this empire and how to improve it is a common interest among many. Previous research includes analyzing which Airbnb hosts are the busiest and why. In addition, research has been conducted to identify what draws people to different Airbnb locations. Seeing how the company's success stems from listing affordable units, we wanted to understand what factors influence Airbnb prices. We found a dataset on Kaggle ("New York City Airbnb Open Data") that includes information about Airbnbs in New York City. This dataset "describes the listing activity and metrics in NYC, NY for 2019"  with 48,895 observations across 16 different variables. It explores factors such as host information, location(neighbors, latitude, longitude), price, room type, reviews, and availability. This investigation can ultimately be shared with Airbnb and hosts to discuss how to increase revenues on rentals by prioritizing certain factors. 
 
 ## 1.2: Initial Dataset Cleaning 
 
@@ -58,22 +55,24 @@ airbnb[ , c(10, 11, 12, 14, 15, 16)] <- lapply(airbnb[ , c(10, 11, 12, 14, 15, 1
 # subset rows for correlation and cast as numeric
 airbnb_cor <- airbnb[ , c(10, 11, 12, 14, 15, 16)]
 ```
-1.`id`(listing Id)
-2.`name`(name of the listing)
-3.`host_id`(host ID)
-4.`host_name`(name of the host)
-5.`neighbourhood_group`(location)
-6.`neighbourhood`(area)
-7.`latitude`(latitude coordinates)
-8.`longitude`(longitude coordinates)
-9.`room_type`(listing space type)
-10.`price`(price in dollars)
-11.`minimum_nights`(amount of nights minimum)
-12.`number_of_reviews`(number of reviews)
-13.`last_review`(latest review)
-14.`reviews_per_month`(number of reviews per month)
-15.`calculated_host_listings_count`(amount of listing per host)
-16.`availability_365`(number of days when listing is available for booking)
+Below is a short description of each variable in the dataset: 
+ 
+*   `id`(listing Id)
+*   `name`(name of the listing)
+*   `host_id`(host ID)
+*   `host_name`(name of the host)
+*   `neighbourhood_group`(location)
+*   `neighbourhood`(area)
+*   `latitude`(latitude coordinates)
+*   `longitude`(longitude coordinates)
+*   `room_type`(listing space type)
+*   `price`(price in dollars)
+*   `minimum_nights`(amount of nights minimum)
+*   `number_of_reviews`(number of reviews)
+*   `last_review`(latest review)
+*   `reviews_per_month`(number of reviews per month)
+*   `calculated_host_listings_count`(amount of listing per host)
+*   `availability_365`(number of days when listing is available for booking)
 
 
 After cleaning, our main dataset is described below:
@@ -134,9 +133,12 @@ xkabledply(table(airbnb$room_type), title = "Room Type Counts")
 ```
 
 ## 1.3: SMART Question
+Our SMART questions asks:Is the price of an Airbnb in the 2010s strongly determined by location and room type, or are there other factors involved? 
 
+As mentioned before this information can usful for hosts to understand what consumers prefer and are willing to pay for when looking for an Airbnb in New York City. This is also a great way for the executives of Airbnb to see where they are making the most profits and potentially use to attract more hosts. 
 
 ## 1.4: Overview of Tests and Analysis Conducted 
+To complete a through analysis, we used a Q-Q plots and histogram to  look at the dataset's distribution, boxplots and scatter plots to identify trends, and geographical coverage to identify location popularity. ANOVA tests were used to see which varibles were statistically different and Tukey HSD Post-Hoc test were used to determine where these differences occur
 
 # Section II: Exploratory Data Analysis (EDA)
 
