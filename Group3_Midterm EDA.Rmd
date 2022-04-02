@@ -98,6 +98,8 @@ Our dataset has `r nrow(airbnb)` observations. The continuous variables are desc
 ```{r, results = "markup", echo = F}
 xkablesummary(na.omit(airbnb_cor), title = "Summary Statistics")
 ```
+As table above shows a general summary of the statistics behind our dataset. A few things to take away is that the price ranges from $0 to $10,000. People stayed spent anywhere from 1 to 1,250 nights in an Airbnb. At the end of the year, each Airbnb had reviews ranges from 0 to 629. Finally hosts listed airbnb's anywhere from 0 to 327 units. On average Airbnbs in New York City cost $142, and on average people leave reviews once a month.
+
 
 ```{r}
 library(DescTools)
@@ -120,6 +122,7 @@ The modes of the continuous variables are as follows:
 *   `reviews_per_month`: `r Mode(na.omit(airbnb_cor$reviews_per_month))`
 *   `calcualted_host_listings_count`: `r Mode(airbnb_cor$calculated_host_listings_count)`
 *   `availability_365`: `r Mode(airbnb_cor$availability_365)`
+
 
 The main categorical variables of interest are counted below:
 
