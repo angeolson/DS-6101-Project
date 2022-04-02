@@ -118,7 +118,7 @@ xkabledply(table(airbnb$room_type), title = "Room Type Counts")
 
 ### 2.1.1: Histogram for Price (All Observations)
 
-First, we look at the price distribution for the entire dataset:
+Looking at the price distribution for the entire dataset, we have observed that the data is not normally distributed. The average price of the listings across New York City has come up to $153 per night whereas the maximum price is $10000, indicating that the data is right-skewed.
 
 ```{r, results = 'markup'}
 library(ggplot2)
@@ -140,13 +140,15 @@ qqnorm(airbnb$price, pch = 20, main = "Q-Q Plot for AirBnB Prices (All Observati
 qqline(airbnb$price, col = "black", lwd = 2)
 ```
 
-Price is not normally distributed, and there appear to be a large number of outliers. If we remove those outliers, the distribution is close to normal. 
+There appear to be a large number of outliers in the data and if we remove these outliers, 2972 observations are affected, the average price across New York city comes down to 120$ per night, and the maximum price per night has changed to $334. 
 
 ```{r, results='markup'}
 airbnb_clean = outlierKD2(airbnb, price, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
 ```
 
 ### 2.1.3: Histogram for Price (Outliers Removed)
+
+The distribution is now normal and below we have included Histogram and Q-Q Plot for the clean data to show the changes. However, going further in the analysis, we have decided to keep these Outliers in as we do not want to completely ignore the luxury Airbnb market. With enough data, there is an opportunity here to conduct analyses on both the luxury market and the basic market separately.
 
 ```{r, results = 'markup'}
 library(ggplot2)
@@ -170,6 +172,8 @@ qqline(airbnb_clean$price, col = "black", lwd = 2)
 ## 2.2: Scatter and Box Plots
 ### 2.2.1: Scatter Plot for Price and Number of Reviews
 
+We have observed an interesting correlation between the number of reviews and ‘price’. There seems to be an exponential decrease in the number of reviews as the price increases. This could potentially be indicative of the average number of stays per Airbnb. To further display the relationship, we have performed a natural log function on the number of reviews and included a scatte rplot with these values. Here, we can observe a linear decrease in the number of reviews as the price increases.
+
 Scatter plot for `price` and `number of reviews` without any transformations: 
 
 ```{r, results='markup'}
@@ -181,8 +185,6 @@ ggplot(airbnb, aes(x=price, y=number_of_reviews)) +
   geom_point(size = 1, shape = 18, color = "black") + 
   theme_bw()
 ```
-
-There appears to be a an exponential relationship (exponential decline) between `price` and `number of reviews`. 
 
 Scatter plot for `price` and `number of reviews` taking the $$\log (reviews)$$ to show linear trend: 
 
@@ -197,7 +199,9 @@ ggplot(airbnb, aes(x=price, y=log(number_of_reviews))) +
 
 ### 2.2.2: Box Plot for Price and Neighborhood Group
 
-Note: outliers extend past $1,000 per night, graph truncated for visibility and interpretation. 
+Question: How does the location affect the Price? 
+Note: outliers extend past 1,000 per night, graph truncated for visibility and interpretation.
+We have 5 neighborhood groups in the dataset. From the visualization, it is apparent that the neighborhood in which Airbnb is located has significance in the price point determination. From the boxplot below, we can observe that Manhattan has the highest average price point (197 per night), and the Bronx has the least average price point (87.5$ per night). We have 221 different Neighbourhoods in the data that are part of these Neighbourhood groups.
 
 ```{r, results = "markup"}
 library(ggplot2)
@@ -208,7 +212,9 @@ ggplot(airbnb, aes(price, factor(neighbourhood_group))) +
 ```
 
 ### 2.2.3: Box Plot for Price and Room Type
-Note: outliers extend past $1,000 per night, graph truncated for visibility and interpretation. 
+Question: Does Room type affect the Price point? 
+Note: outliers extend past 1,000 per night, graph truncated for visibility and interpretation.
+We have 3 different room types in the dataset with Entire home/apt as the most common (25409 listings) and Shared room as the least common (1160) option. We have observed that the Entire homes/Apartments are also priced higher at an average of 212$ per night. From the analysis, it is apparent that the room type has significance in determining the price point of an Airbnb.
 
 ```{r, results = "markup"}
 library(ggplot2)
