@@ -1,0 +1,547 @@
+---
+title: "Midterm Summary Paper"
+author: "Group 3: Pavani Samala, Ange Olson, Kowshik Bezawada, Meghana Gantla"
+date: "`r Sys.Date()`"
+output: 
+   rmdformats::readthedown:
+   #rmdformats::material:
+   #rmdformats::html_clean:
+     highlight: kate
+     code_folding: hide
+#  html_document:
+#    rmdformats::material
+#    code_folding: hide
+#    number_sections: false
+#    toc: yes
+#    toc_depth: 3
+#    toc_float: yes
+#  pdf_document:
+#    toc: yes
+#    toc_depth: '3'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = F, results = "hide", message = F)
+options(scientific=T, digits = 3) 
+library(ezids)
+```
+
+# Section I: Introduction
+
+## 1.1: Background on Airbnb, Inc.
+
+Airbnb, Inc. is a company that allows individuals across the world to rent out spare rooms, apartments, houses, etc. to long and short term renters. What started in 2008 as an idea to rent airbeds in a bed and breakfast to strangers (Abhinandhinee, 2021) became a 30 billion dollar business (Lily, 2017). The owners of Airbnb successfully combined affordability and adventure while creating a unique solution to the shortage of short-term housing. Since its inception, Airbnb has expanded to 191 countries and 65,000 cities (Rafaat and Weller, 2019. 
+
+## 1.2: Project Motivation
+
+Understanding the success of this empire and how to improve it is a common interest among many. Previous research includes analyzing which Airbnb hosts are the busiest and why. In addition, research has been conducted to identify what draws people to different Airbnb locations. 
+
+Seeing how the company's success stems from listing affordable units, we wanted to understand what factors influence Airbnb prices. We found a dataset on Kaggle ("New York City Airbnb Open Data") that includes information about Airbnbs in New York City. This dataset "describes the listing activity and metrics in NYC, NY for 2019"  with 48,895 observations across 16 different variables. It explores factors such as host information, location (neighborhood, borough, latitude, longitude), price, room type, last review date, and availability. 
+
+Results from this investigation can ultimately be shared with Airbnb and hosts to discuss how to increase revenues on rentals by prioritizing certain factors.
+
+## 1.1: Initial Dataset Cleaning 
+
+Before we began the analysis, we took a few steps to clean the data. The data was mostly clean, but we created a subset for calculating correlation, changed some data to be categorical or numerical depending on the variable, and fixed the dates so that they aren't read in as characters.
+
+Before making any of our adjustments, our dataset is described as follows:
+
+```{r, results="markup"}
+# read in dataset
+airbnb <- data.frame(read.csv("NYC ABS.csv", header = TRUE))
+
+#structure of dataset
+str(airbnb)
+```
+
+
+```{r, echo = F}
+
+# edit dates
+airbnb$last_review <- as.Date(airbnb$last_review, format = "%m/%d/%Y")
+
+# cast categorical variables
+airbnb$neighbourhood_group <- as.factor(airbnb$neighbourhood_group)
+airbnb$neighbourhood <- as.factor(airbnb$neighbourhood)
+airbnb$room_type <- as.factor(airbnb$room_type)
+
+# cast numerical variables as numeric
+airbnb[ , c(10, 11, 12, 14, 15, 16)] <- lapply(airbnb[ , c(10, 11, 12, 14, 15, 16)], as.numeric)
+
+# subset rows for correlation and cast as numeric
+airbnb_cor <- airbnb[ , c(10, 11, 12, 14, 15, 16)]
+```
+
+Below is a short description of each variable in the dataset: 
+ 
+*   `id` (listing Id)
+*   `name` (name of the listing)
+*   `host_id` (host ID)
+*   `host_name` (name of the host)
+*   `neighbourhood_group` (location)
+*   `neighbourhood` (area)
+*   `latitude` (latitude coordinates)
+*   `longitude` (longitude coordinates)
+*   `room_type` (listing space type)
+*   `price` (price in dollars)
+*   `minimum_nights` (amount of nights minimum)
+*   `number_of_reviews` (number of reviews)
+*   `last_review` (latest review)
+*   `reviews_per_month` (number of reviews per month)
+*   `calculated_host_listings_count` (amount of listing per host)
+*   `availability_365` (number of days when listing is available for booking)
+
+After cleaning, our main dataset is described below:
+
+```{r, results='markup'}
+str(airbnb)
+```
+
+Note that the `neighbourhood_group`, `neighbourhood`, and `room_type` were changed from a character variable to a factorial variable. The `price`, `minimum_nights`,`number_of_reviews`,`reviews_per_month`, `calculated_host_listings_count`, and `availability_365`, were changed from a integer variable to a numerical variable. 
+
+
+Our secondary dataset (used to measure correlation) is described below:
+
+```{r, results='markup'}
+str(airbnb_cor)
+```
+`price`,`minimum_nights`,`number_of_reviews`,`reviews_per_month`,`calculated_host_listings_count`,and `availability_365` are the continuous variables that we used to measure correlations. 
+
+
+## 1.2: Descriptive Statistics
+
+Our dataset has `r nrow(airbnb)` observations. The continuous variables are described below (NA values omitted):
+
+```{r, results = "markup", echo = F}
+xkablesummary(na.omit(airbnb_cor), title = "Summary Statistics")
+```
+
+The table above shows a general summary of the statistics behind our dataset. A few things to take away are that the price ranges from 0 USD to 10,000 USD, people stayed spent anywhere from 1 to 1,250 nights in an Airbnb, and at the end of the year, each Airbnb had reviews ranges from 0 to 629. Also, hosts listed anywhere from 0 to 327 Airbnb units. On average Airbnbs in New York City cost 142 USD, and on average people leave reviews once a month.
+
+
+```{r}
+library(DescTools)
+```
+
+The standard deviations of the continuous variables are as follows:
+
+*   `price`: `r sd(airbnb_cor$price)`
+*   `minimum_nights`: `r sd(airbnb_cor$minimum_nights)`
+*   `number_of_reviews`: `r sd(airbnb_cor$number_of_reviews)`
+*   `reviews_per_month`: `r sd(na.omit(airbnb_cor$reviews_per_month))`
+*   `calcualted_host_listings_count`: `r sd(airbnb_cor$calculated_host_listings_count)`
+*   `availability_365`: `r sd(airbnb_cor$availability_365)`
+
+The modes of the continuous variables are as follows:
+
+*   `price`: `r Mode(airbnb_cor$price)`
+*   `minimum_nights`: `r Mode(airbnb_cor$minimum_nights)`
+*   `number_of_reviews`: `r Mode(airbnb_cor$number_of_reviews)`
+*   `reviews_per_month`: `r Mode(na.omit(airbnb_cor$reviews_per_month))`
+*   `calcualted_host_listings_count`: `r Mode(airbnb_cor$calculated_host_listings_count)`
+*   `availability_365`: `r Mode(airbnb_cor$availability_365)`
+
+## 1.3: SMART Question
+
+Our SMART questions asks: **Is the price of an Airbnb in the 2010s strongly determined by location and room type, or are there other factors involved?** 
+
+As mentioned before this information can be useful for hosts to understand what consumers prefer and are willing to pay for when looking for an Airbnb in New York City. This is also a great way for the executives of Airbnb to see where they are making the most profits and potentially use this information to attract more hosts. 
+
+## 1.4: Overview of Tests and Analysis Conducted 
+
+To complete a through analysis, we used Q-Q plots and histograms to look at the distribution of the `price` variable, boxplots and scatter plots to identify trends between `price` and potential explanatory variables, and geographical maps to identify location popularity and provide insight into price and popularity by neighborhood. 
+
+Correlation was used to test for relationships between `price` and the continuous variables in our dataset, and ANOVA tests were used to test for differences in the value of `price` between our categorical variables. Where our ANOVA tests showed statistically significant differences, we ran Tukey HSD Post-Hoc tests to determine where these differences occurred.
+
+# Section II: Exploratory Data Analysis (Visuals)
+
+In this section, we cover the Exploratory Data Analysis (EDA) we conducted to visualize our dataset prior to conducting statistical tests. First, we cover the analysis we did to see how our variable of interest, `price`, is distributed. Next, we cover boxplots and scatterplots for independent variables that show some potential relationship with `price`. Lastly, we present maps of our datapoints. 
+
+## 2.1: Airbnb Price distribution
+
+### 2.1.1: Price distribution for All Observations
+
+Looking at the price distribution for the entire dataset, we have observed that the data is not normally distributed. The average price of the listings across New York City has come up to 153 USD per night whereas the maximum price is 10,000 USD, indicating that the data has some significant outliers and is right-skewed.
+
+```{r, results = 'markup'}
+library(ggplot2)
+ggplot(data=airbnb, aes(price)) + 
+  geom_histogram(bins = 100, 
+                 col  = "blue", 
+                 fill = "light blue", 
+                alpha = .7) + # opacity
+    labs(title = "Histogram of Airbnb Price (All Observations)", 
+             x = "AirBnB Price", 
+             y = "Frequency") +
+     theme_grey()
+```
+
+```{r, results='markup'}
+qqnorm(airbnb$price, pch = 20, main = "Q-Q Plot for Airbnb Prices (All Observations)")
+qqline(airbnb$price, col = "black", lwd = 2)
+summary(airbnb$price)
+```
+
+### 2.1.3: Price distribution after removing Outliers
+
+```{r, results='markup'}
+airbnb_clean = outlierKD2(airbnb, price, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
+```
+
+When we remove the outliers, 2972 observations are affected, decreasing the average price across New York city to 120 USD per night. The maximum price per night has also decreased to 334 USD. The distribution is now normal and we included a histogram and Q-Q plot below for the clean data to show the changes. However, going further in the analysis, we have decided to keep these outliers, since we do not want to completely ignore the luxury Airbnb market. With enough data, there is an opportunity here to conduct analyses on both the luxury market and the basic market separately.
+
+```{r, results = 'markup'}
+library(ggplot2)
+ggplot(data = airbnb_clean, aes(price)) +  
+  geom_histogram(bins = 100, 
+                 col  = "blue", 
+                 fill = "light blue", 
+                alpha = .7) +  # opacity
+    labs(title = "Histogram of Airbnb Price (Outliers removed)", 
+             x = "AirBnB Price", 
+             y = "Frequency") +
+     theme_grey()
+```
+
+```{r, results='markup'}
+qqnorm(airbnb_clean$price, pch = 20, main = "Q-Q Plot for AirBnB Prices (Outliers Removed)")
+qqline(airbnb_clean$price, col = "black", lwd = 2)
+```
+
+## 2.2: Does location of the Airbnb affect the Price?
+
+### 2.2.1: Airbnbs in NY by Neighbourhood group
+
+We have Airbnbs from five neighborhood groups of the New york city in the dataset. Using the `plotly` library, we built maps to visualize their location by neighborhood group with latitude and longitude coordinates from our dataset. we placed the Airbnb sites on the map and denoted them with different colors to represent the different neighborhood groups. We can see that Manhattan has the highest density and Staten Island has the least. 
+
+```{r, results = 'markup'}
+
+#neighborhood group
+xkabledply(table(airbnb$neighbourhood_group), title = "Neighbourhood Group (Burough) Counts")
+
+#install.packages("plotly")
+library(plotly)
+fig <- airbnb
+fig <- fig %>%
+  
+  plot_ly(
+    lat = ~latitude,
+    lon = ~longitude,
+    color = ~neighbourhood_group,
+    colors = "Set1",
+    type = 'scattermapbox')
+
+fig <- fig %>%
+  layout(
+    mapbox = list(
+      style = 'open-street-map',
+      zoom =9,
+      center = list(lon = -73.97, lat = 40.71))) 
+
+fig
+```
+
+
+### 2.2.2: Price of Airbnbs in NY by Neighbourhood group
+
+Note: outliers extend past 1,000 per night, graph truncated for visibility and interpretation.
+
+```{r, results = "markup"}
+library(ggplot2)
+ggplot(airbnb, aes(price, factor(neighbourhood_group))) + 
+  geom_boxplot(color = "black", fill = c("light green", "pink","light blue", "yellow", "orange")) +
+  labs(title = "Neighborhood Group vs Price Box plot", x = "Price", y = "Neighborhood group") +
+  xlim(0, 1000)
+```
+Average prices per night by Neighborhood group
+* `Manhattan`    : $197
+* `Brooklyn`     : $124
+* `Staten Island`: $115
+* `Queens`       : $99.5
+* `Bronx`        : $87.5
+
+### 2.2.3: Average Price and Number of Listings by Neighborhood
+
+We have 221 different Neighborhoods in the data that are part of these Neighborhood groups. To visualize the average price along side density, we used the `ggpmap` package to build the map shown below. The size of the point indicates the density of the neighborhood and the color indicates the average price. 
+
+```{r}
+# create subset just for aggregating by mean
+airbnb_map <- airbnb[ , c(6, 7, 8, 10)]
+airbnb_map_means <- aggregate(.~neighbourhood, airbnb_map, mean)
+
+# create subset for aggregating by count
+airbnb_count <- airbnb_map
+airbnb_count$count <- 1
+airbnb_count <- airbnb_count[, c(1,5)]
+airbnb_counter <- aggregate(.~neighbourhood, airbnb_count, sum)
+
+# create full dataset from both subsets
+airbnb_map_full <- cbind(airbnb_counter, airbnb_map_means)
+
+# check that union occured correctly, then drop extra neighborhood value
+all.equal(airbnb_map_full[, 1], airbnb_map_full[, 3]) # true!
+airbnb_map_full <- airbnb_map_full[, -3]
+```
+
+```{r, results = 'markup'}
+#Load the library
+library(ggplot2)
+library(ggmap)
+
+#Set your API Key
+ggmap::register_google(key = "AIzaSyBuM2zUJqBlgjcki9tYS1emZr3awesSqac")
+
+#map by price 
+newyork.map <- get_map("New York", zoom = 10, scale = 1, maptype = "terrain")  
+ggmap(newyork.map) +  geom_point(data = airbnb_map_full, aes(x = longitude, y = latitude, colour = price, size = count), alpha = 0.5) + 
+  scale_colour_gradientn(colours=rainbow(3)) +
+  labs(title = "Average Airbnb Price and Density by Neighborhood", x = "Longitude", y = "Latitude")
+```
+
+From the visualization, it is apparent that Manhattan is the neighborhood group with highest density of Airbnbs. The analysis also shows that it is the most expensive. Staten Island has the least density, and Bronx is the least expensive neighborhood group. This result is expected since Manhattan is know to be the most popular area of New York City for tourists. The cost of living is also quite high in the area, which once again validates the results we see from the map. From the analysis, it is apparent that the neighborhood in which an Airbnb is located in has an influence over the price. 
+
+
+## 2.3: Does room type affect the Price?
+
+### 2.3.1: Airbnbs in NY by room type
+
+We have 3 different room types in the dataset with Entire home/apt as the most common (25409 listings) and shared room as the least common option(1160 listings). We have observed that the Entire homes/Apartments are also priced higher at an average of 212 USD per night. 
+
+```{r, results = 'markup'}
+#Room type
+xkabledply(table(airbnb$room_type), title = "Room Type Counts")
+
+#install.packages("plotly")
+library(plotly)
+fig <- airbnb
+fig <- fig %>%
+  
+  plot_ly(
+    lat = ~latitude,
+    lon = ~longitude,
+    color = ~room_type,
+    #colors = "Set1",
+    type = 'scattermapbox')
+
+fig <- fig %>%
+  layout(
+    mapbox = list(
+      style = 'carto-positron',
+      zoom =9,
+      center = list(lon = -73.97, lat = 40.71))) 
+
+fig
+```
+
+### 2.3.2 Average Price by Room type
+
+Note: outliers extend past 1,000 per night, graph truncated for visibility and interpretation.
+
+```{r, results = "markup"}
+library(ggplot2)
+ggplot(airbnb, aes(price, factor(room_type))) + 
+  geom_boxplot(width = 0.7, color = "black", fill = c("light green", "yellow","light blue")) +
+  labs(title = "Room type vs Price Box plot", x = "Price", y = "Room Type") + xlim(0, 1000)
+```
+
+Average prices per night by Room type
+* `Entire home/apartment` : $212
+* `Private room        `  : $89.8
+* `Shared room`           : $70.1
+
+From the analysis, it is apparent that the room type has significance in determining the price point of an Airbnb.
+
+
+## 2.4 Do number of reviews affect the Price?
+
+### 2.4.1: Number of Reviews vs Price
+
+We have observed an interesting correlation between the `number_of_reviews` and `price`. There seems to be an exponential decrease in the number of reviews as the price increases. This could potentially be indicative of the average number of stays per Airbnb. To further display the relationship, we performed a natural log function on the number of reviews and included a scatterplot with these values. Here, we can observe a linear decrease in the number of reviews as the price increases.
+
+Scatter plot for `price` and `number of reviews` without any transformations: 
+
+```{r, results='markup'}
+library(ggplot2)
+library(ggpubr)
+ggplot(airbnb, aes(x=price, y=number_of_reviews)) + 
+  ggtitle("Number of Reviews vs Price Scatter Plot") + 
+  xlab("Price ($)") + ylab("Number Of Reviews") + 
+  geom_point(size = 1, shape = 18, color = "black") + 
+  theme_bw()
+```
+
+### 2.4.2 Log(Number_of_reviews) vs Price
+
+Scatter plot for `price` and `number of reviews` taking the $$\log (reviews)$$ to show linear trend: 
+
+```{r, results='markup'}
+library(ggplot2)
+library(ggpubr)
+ggplot(airbnb, aes(x=price, y=log(number_of_reviews))) + 
+  ggtitle("Number of Reviews vs Price Scatter Plot") + 
+  xlab("Price ($)") + ylab("Number Of Reviews (Natural Log)") + 
+  geom_point(size = 1, shape = 18, color = "black")
+```
+
+
+# Section III: Correlation and ANOVA Tests
+
+## 3.1: Correlation
+### 3.1.1: Correlation Matrix for Airbnb Data
+
+To answer our SMART question, we needed to investigate if any variables other than location or room type seemed to be related to the variable of interest, `price`. The other variables identified are as follows:
+
+* `minimum_nights`
+* `number_of_reviews`
+* `reviews_per_month`
+* `calculated_host_listings_count`
+* `availability_365`
+
+As all of these variables are continuous, we have chosen to look at correlation. It is important to note that correlation does not imply causation. However, for the purpose of our SMART question, if for example a variable $x$ is highly and positively correlated with price, we can say that the presence of $x$ is associated with an increase in price and that will be sufficient.
+
+Below we have a correlation matrix and accompanying correlation plot using all complete observations (note: `reviews per month` contains NA values).
+
+```{r, results = "markup"}
+loadPkg("faraway")
+loadPkg("corrplot")
+xkabledply(cor(airbnb_cor, use = "complete.obs"), title = "Correlation Matrix")
+airbnb_corplot = cor(airbnb_cor, use = "complete.obs")
+corrplot(airbnb_corplot, method = "circle")
+```
+
+As shown, no variable of interest shows strong Pearson correlation with price, but `minimum_nights` and `availability_365`, `number_of_reviews` and `availability_365`, and `calculated_host_listings_count` and `availability_365` show some evidence of positive correlation. 
+
+Additionally, as expected, we see strong correlation between the total number of reviews and the reviews per month. This makes sense; we would expect that the more reviews in total a unit has, the more reviews it receives per month. This correlation is significantly significant, as shown in subsection 3.1.2.
+
+While the correlation between `price` and `number_of_reviews` is not high, as shown from our previous scatter plots there does appear to be an exponential relationship between the two variables, with the highest-priced units receiving very few reviews total. In subsection 3.1.3, we see that this relationship is not strong but that there is some statistically significant evidence of correlation. This relationship makes sense; number of reviews can be a proxy for total number of stays in the unit, and one would expect that expensive units are stayed in less frequently. 
+
+### 3.1.2: Correlation Between Reviews per Month and Total Reviews
+
+```{r, results = "markup"}
+cor.test(x=airbnb_cor$reviews_per_month, y=airbnb_cor$number_of_reviews)
+```
+
+
+### 3.1.3: Correlation Between Number of Reviews (Y) and Price (X) 
+
+```{r, results = "markup"}
+cor.test(y=airbnb$number_of_reviews, x=airbnb$price)
+```
+
+
+## 3.2: ANOVA Tests
+
+The main two variables of interest in our smart question are location and room type, represented by the variables `neighborhood_group` (a multi-level categorical variable which denotes the borough of NYC) and `room_type` (a three-level categorical variable which denotes if a room is private, shared, or a whole living space). 
+
+If there are statistically significant differences in price by room type or by location, we can infer that price can be determined by location or room type. Note that this does not insinuate a causal relationship; it is possible that as location or room type vary, so does an unobserved variable that actually determines price. However, given what is known about the housing market (and rental market) in general, location, size, and privacy are known to affect price/demand. Therefore, we can paint a story of causality here.
+
+Given that our categorical variables are multi-level, we perform ANOVA tests rather than t-tests. Our threshold for statistical significance is $\alpha = 0.05$. 
+
+### 3.2.1: Testing for Differences in Price by Neighborhood Group
+
+First, we test for differences by borough of NYC. Based on the table below, we can see that the p-value is close to zero and we can reject the null, concluding that there are price differences by borough. Given this, we follow up with a Tukey HSD Post-Hoc test to determine where these differences occur.
+
+```{r, results = "markup"}
+#anova test for price and neighborhood groups
+anova_price_group = aov(price ~ neighbourhood_group, data=airbnb)
+summary(anova_price_group) -> sum_anova_price_group
+xkabledply(sum_anova_price_group, title = "ANOVA Result Summary for Neighborhood Groups")
+
+tukeyAoV_pg <- TukeyHSD(anova_price_group)
+tukeyAoV_pg
+
+```
+
+#### 3.2.1.1 Tukey HSD Results:
+
+At a statistically significant level with $\alpha = 0.05$, we see that there are statistically significant differences between Manhattan and all other boroughs, between Brooklyn and the Bronx, and between Queens and Brooklyn. Differences are not statically significant between Staten Island, Queens, and the Bronx.
+
+This aligns with our previous visual findings, that Manhattan appeared to the most expensive borough with Brooklyn coming in at second. In terms of using location to determine price, we can conclude that certain boroughs are more useful predictors than others. For example, knowing that a unit is in Manhattan as opposed to in the Bronx would be useful, but with no other information, a unit in Staten Island may be priced roughly the same as a unit in Queens. Still, given that at least some locations are priced differently from each other, we can conclude that yes, location does have an effect on price. 
+
+
+### 3.2.2: Testing for Differences in Price by Room Type
+
+Next, we test for differences by room type. Based on the table below, we can see that the p-value is close to zero and we can reject the null, concluding that there are price differences by room type. Given this, we follow up with a Tukey HSD Post-Hoc test to determine where these differences occur.
+
+```{r, results = "markup"}
+#anova test for price and room type
+anova_price_room = aov(price ~ room_type, data=airbnb)
+summary(anova_price_room) -> sum_anova_price_room
+xkabledply(sum_anova_price_room, title = "ANOVA result summary for Room Type")
+
+tukeyAoV_pr <- TukeyHSD(anova_price_room)
+tukeyAoV_pr
+```
+
+#### 3.2.2.1 Tukey HSD Results:
+
+At a statistically significant level with $\alpha = 0.05$, we see that there are statistically significant differences across all room types. This lines up with our visual representations as well, where we saw that an entire home or apartment was significantly preferred (priced higher) than either room. While not as visually obvious, a private room is also priced statistically significantly higher than a shared room. We can conclude that room type does likely have an effect on price.
+
+
+# Section IV: Conclusion
+
+To conclude, we found strong evidence during our EDA that price of an AirBnb unit differed based on both location (borough in New York City) and room type (full house/apartment, private room, and shared room). However, we found very little evidence that the continuous variables we selected for observation:
+
+* `minimum_nights`
+* `number_of_reviews`
+* `reviews_per_month`
+* `calculated_host_listings_count`
+* `availability_365`
+
+were related to price. To confirm these initial findings, we observed correlation values and conducted ANOVA and Tukey post-hoc tests. These statistical tests confirmed what we saw visually: price is correlated with our categorical variables `location` and `neighbourhood_group`, but that none of the continuous variable seem related. 
+
+## 4.1: Analysis of SMART Question
+
+Our SMART Question, **"Is the price of an AirBnB in the 2010s strongly determined by location and room type, or are there other factors involved?"**, did not change after our EDA. However, we did find that contrary to what we had anticipated, no other factors we observed other than location or room type seemed to have a part in determining AirBnB unit price. 
+
+In terms of answering our question, we did succeed in determining that location and room type have an effect. However, is this effect strong? How do we determine strength?
+
+One way is to look at the significance of the differences in price by these categories, not only the statistical significance. For location, the actual difference between average prices in Manhattan versus the Bronx is large, estimated to fall in the range of 89.34-129.4 USD. In this example, not only is the difference statistically significant, but it is actually significant for the average AirBnb consumer or host. Similarly, the actual difference between prices for an entire room/apartment and private room is estimated to fall between 117.02-127 USD. This is also a significant price difference, when we consider that average prices by these categories all fall under 250 USD. 
+
+However, the differences between some boroughs are not statistically significant, and even a statistically significant difference like that between Brooklyn and Queens, which is estimated to fall between 15.2 and 34.58 USD, may not really be a significant price difference when compared to the mean. Similarly, the estimated difference between a shared room and a private room, estimated to fall between 3.27 and 36 USD, may also not be very significant when comparing to the mean.     
+
+Another way to measure strength is through the predictive power of these variables in a model. While not part of our midterm analysis, this method of measuring strength could be used in our future analysis. With the information we have currently, however, we can argue that overall, we did find strong relationships between location, room type, and price, given that at least some of the differences are statistically and contextually significant. 
+
+## 4.2: Limitations of Dataset
+
+Our dataset does face substantial limitations. We are missing data that would tell us more about the expected value of the home, as well as potential metrics more related to the AirBnB platform that a consumer might look for and that would affect demand, and therefore price.
+
+### 4.2.1: Home Value Limitations
+
+Some of the key factors that influence a total home value are missing from this dataset. While not all factors that affect home value for a buyer or long-term renter, such as schools, will affect those looking for an AirBnB, it is expected that costs that the owner of the AirBnB faced will be passed on to consumers to help the owner profit off of listing their unit. An example of this is square footage (Gomez, 2019), or more importantly, actual usable space of this square footage. Especially in a city like New York (Szekely,2016), this comes at a premium and would be expected to have an impact on price.
+
+### 4.2.2: AirBnB Data Limitations
+
+Data points more central to the platform itself that we are lacking include:
+
+* Review data that we could perform sentiment analysis on to capture information on number of positive reviews
+* Overall listing rating
+* Host rating or status, which might indicate a more trustworthy host and increase demand/price
+* Data on when these prices were taken, and price data taken over time to analyze differences by month or year 
+
+Any of these data points may affect user demand for a unit, which could increase or decrease the price. 
+
+## 4.3: Next Steps 
+
+Next steps are to use what we have learned about what in our dataset relates to price to construct a linear model.
+
+Despite the limitations with our dataset, there are a few potential next steps we can take with the data we have that may help us in constructing a linear model to describe price. These include:
+
+* Looking at the interaction between our categorical variables to see if specific room types in specific neighborhoods relate to price
+* Use the `last_review` variable to construct a new variable based on how many days ago (from the date the dataset was pulled)  the last review was as a proxy for demand 
+* Use the `name` variable to construct a new variable based on the length of the name to see if greater detail, i.e. longer name length, increases demand/price  
+
+### Works Cited
+
+Gomez, Joe. (2019). *8 critical factors that influence a home’s value*. Opendoor. https://www.opendoor.com/w/blog/factors-that-influence-home-value. 
+
+Szekely, Balazs. (2016). *The Tiniest Rentals in New York City—If ≈300 Sq. Ft. is Just What You Need*. Rentcafe. https://www.rentcafe.com/blog/apartment-search-2/the-tiniest-rentals-in-new-york-city-if-%E2%89%88300-sq-ft-is-just-what-you-need/ 
+
+Abhinandhinee. (2021). *Airbnb | The success story of this incredible startup*. Failure Before Success. https://failurebeforesuccess.com/the-success-story-of-airbnb/:~:text=Airbnb%20|%20The%20success%20story%20of%20this%20incredible,we%20can%20learn%20from%20this%20success%20story. 
+
+Lily. (2017). *6 Biggest Reasons Why Airbnb Is So Popular*. The Frugal Gene. https://thefrugalgene.com/airbnb-popular/. 
+
+Raafat, Alaa & Weller, Carlotta. (2019). *A New Era of Lodging: Airbnb’s Impact on Hotels, Travelers, and Cities*. Medium. https://medium.com/harvard-real-estate-review/a-new-era-of-lodging-airbnbs-impact-on-hotels-travelers-and-cities-de3b1c2d5ab6.   
+
+
+
