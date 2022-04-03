@@ -310,9 +310,9 @@ fig
 
 ### 2.3.2: AirBnB Average Price and Number of Listings by Neighborhood:
 
-To vusialize the average price along side density, we used the `ggpmap` package to build the map shown below. The size of the point indicates the density of the neighborhood and the color indicates the average price. 
+To visualize the average price along side density, we used the `ggpmap` package to build the map shown below. The size of the point indicates the density of the neighborhood and the color indicates the average price. 
 
-As we mentioned before, Manhattan is the most densely populated with Airbnbs. The figure below shows that it is also the most expensive. Likewise, we mentioned Staten Island is the least densely populated, and we can see that it is also the least expensive. 
+As we mentioned before, Manhattan is the most densely populated with Airbnbs. The figure below shows that it is also the most expensive. Likewise, we mentioned Staten Island is the least densely populated, and we can see that it is also the least expensive. This result is expected since Manhattan is know to be the most popular area of New York City for tourists. The cost of living is also quite high in Manhattan, which once again validates the results we see from the map.
 ```{r}
 # create subset just for aggregating by mean
 airbnb_map <- airbnb[ , c(6, 7, 8, 10)]
