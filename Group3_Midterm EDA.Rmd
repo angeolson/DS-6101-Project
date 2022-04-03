@@ -253,7 +253,7 @@ ggplot(airbnb, aes(x=price, y=log(number_of_reviews))) +
 
 Note: outliers extend past 1,000 per night, graph truncated for visibility and interpretation.
 
-We have 5 neighborhood groups in the dataset. From the visualization, it is apparent that the neighborhood in which Airbnb is located has significance in the price point determination. From the boxplot below, we can observe that Manhattan has the highest average price point (197 USD per night), and the Bronx has the least average price point (87.50 USD per night). We have 221 different Neighborhoods in the data that are part of these Neighborhood groups.
+We have five neighborhood groups in the dataset. From the visualization, it is apparent that the neighborhood in which an Airbnb is located in has an influence over the price. From the boxplot below, we can observe that Manhattan has the highest average price point (197 USD per night), and the Bronx has the least average price point (87.50 USD per night). We have 221 different Neighborhoods in the data that are part of these Neighborhood groups.
 
 ```{r, results = "markup"}
 library(ggplot2)
@@ -269,7 +269,7 @@ ggplot(airbnb, aes(price, factor(neighbourhood_group))) +
 
 Note: outliers extend past 1,000 per night, graph truncated for visibility and interpretation.
 
-We have 3 different room types in the dataset with Entire home/apt as the most common (25409 listings) and Shared room as the least common (1160) option. We have observed that the Entire homes/Apartments are also priced higher at an average of 212 USD per night. From the analysis, it is apparent that the room type has significance in determining the price point of an Airbnb.
+We have 3 different room types in the dataset with Entire home/apt as the most common (25409 listings) and shared room as the least common option(1160 listings) . We have observed that the Entire homes/Apartments are also priced higher at an average of 212 USD per night. From the analysis, it is apparent that the room type has significance in determining the price point of an Airbnb.
 
 ```{r, results = "markup"}
 library(ggplot2)
@@ -282,11 +282,7 @@ ggplot(airbnb, aes(price, factor(room_type))) +
 
 ### 2.3.1: Map of AirBnbs in NY by Neighbourhood group
 
-Using the `plotly` library, we built maps to visualize the density of AirBnBs by neighborhood.
-
-By using latitude and longitude data from our dataset, we placed the AirBnB sites on the map and colored the different neighborhood groupings.
-
-We can tell the density of AirBnB's distribution by looking at the graphs, and we can see that Manhattan is the most dense and Staten Island is the least dense.
+Using the `plotly` library, we built maps to visualize the density of AirBnBs by neighborhood. By using latitude and longitude coordinates from our dataset, we placed the AirBnB sites on the map and denoted them with different colors to represent the different neighborhoods. We can see that Manhattan has the greatest density of Airbnbs and Staten Island has the least. 
 
 ```{r, results = 'markup'}
 #install.packages("plotly")
