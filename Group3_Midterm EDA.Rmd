@@ -222,7 +222,7 @@ qqline(airbnb_clean$price, col = "black", lwd = 2)
 ## 2.2: Scatter and Box Plots
 ### 2.2.1: Scatter Plot for Price and Number of Reviews
 
-We have observed an interesting correlation between the number of reviews and ‘price’. There seems to be an exponential decrease in the number of reviews as the price increases. This could potentially be indicative of the average number of stays per Airbnb. To further display the relationship, we have performed a natural log function on the number of reviews and included a scatte rplot with these values. Here, we can observe a linear decrease in the number of reviews as the price increases.
+We have observed an interesting correlation between the `number_of_reviews` and `price`. There seems to be an exponential decrease in the number of reviews as the price increases. This could potentially be indicative of the average number of stays per Airbnb. To further display the relationship, we performed a natural log function on the number of reviews and included a scatterplot with these values. Here, we can observe a linear decrease in the number of reviews as the price increases.
 
 Scatter plot for `price` and `number of reviews` without any transformations: 
 
