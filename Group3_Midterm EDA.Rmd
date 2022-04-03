@@ -167,7 +167,7 @@ In this section, we cover the Exploratory Data Analysis (EDA) we conducted to vi
 
 ### 2.1.1: Histogram for Price (All Observations)
 
-Looking at the price distribution for the entire dataset, we have observed that the data is not normally distributed. The average price of the listings across New York City has come up to 153 USD per night whereas the maximum price is 10,000 USD, indicating that the data has some significant outliers and is right-skewed.
+Looking at the price distribution for the entire dataset, we have observed that the data is not normally distributed. The average price of the listings across New York City has come up to 153 USD per night whereas the maximum price is 10,000 USD, indicating that the data has some significant outliers and is right-skewed. If the distribution of data is skewed to the right, the mode is often less than the median, which is less than the mean
 
 ```{r, results = 'markup'}
 library(ggplot2)
@@ -190,7 +190,7 @@ qqnorm(airbnb$price, pch = 20, main = "Q-Q Plot for AirBnB Prices (All Observati
 qqline(airbnb$price, col = "black", lwd = 2)
 ```
 
-When we remove the outliers, 2972 observations are affected, decreasing the average price across New York city to 120 USD per night. The maximum price per night has also decreased to 334 USD. 
+When we remove the outliers, 2972 observations are affected which are significantly belonging to the luxury market of AirBnB, decreasing the average price across New York city to 120 USD per night. The maximum price per night has also decreased to 334 USD. 
 
 ```{r, results='markup'}
 airbnb_clean = outlierKD2(airbnb, price, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
@@ -198,7 +198,7 @@ airbnb_clean = outlierKD2(airbnb, price, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
 
 ### 2.1.3: Histogram for Price (Outliers Removed)
 
-The distribution is now normal and we included a histogram and Q-Q plot below for the clean data to show the changes. However, going further in the analysis, we have decided to keep these outliers, since we do not want to completely ignore the luxury Airbnb market. With enough data, there is an opportunity here to conduct analyses on both the luxury market and the basic market separately.
+The distribution is now normal and we included a histogram and Q-Q plot below for the clean data to show the changes. However, going further in the analysis, we have decided to keep these outliers, since we do not want to completely ignore the luxury Airbnb market. With enough data, there is an opportunity here to conduct analysis on both the luxury market and the basic market separately.
 
 ```{r, results = 'markup'}
 library(ggplot2)
@@ -253,7 +253,7 @@ ggplot(airbnb, aes(x=price, y=log(number_of_reviews))) +
 
 Note: outliers extend past 1,000 per night, graph truncated for visibility and interpretation.
 
-We have five neighborhood groups in the dataset. From the visualization, it is apparent that the neighborhood in which an Airbnb is located in has an influence over the price. From the boxplot below, we can observe that Manhattan has the highest average price point (197 USD per night), and the Bronx has the least average price point (87.50 USD per night). We have 221 different Neighborhoods in the data that are part of these Neighborhood groups.
+We have five neighborhood groups in the dataset. From the visualization, it is apparent that the neighborhood in which an Airbnb is located in has an influence over the price. From the boxplot below, we can observe that Manhattan has the highest average price point (197 USD per night), and the Bronx has the least average price point (87.50 USD per night). We have 221 different Neighborhoods in the data that are part of these Neighborhood groups. Also Manhattan is most dense and Staten Island being the least dense one.
 
 ```{r, results = "markup"}
 library(ggplot2)
@@ -312,7 +312,7 @@ fig
 
 To visualize the average price along side density, we used the `ggpmap` package to build the map shown below. The size of the point indicates the density of the neighborhood and the color indicates the average price. 
 
-As we mentioned before, Manhattan is the most densely populated with Airbnbs. The figure below shows that it is also the most expensive. Likewise, we mentioned Staten Island is the least densely populated, and we can see that it is also the least expensive. This result is expected since Manhattan is know to be the most popular area of New York City for tourists. The cost of living is also quite high in Manhattan, which once again validates the results we see from the map.
+As we mentioned before, Manhattan is the most densely populated with Airbnbs. The figure below shows that it is also the most expensive. Likewise, we mentioned Staten Island is the least densely populated, and we can see that it is also the least expensive. This result is expected since Manhattan is known to be the most popular area of New York City for tourists. The cost of living is also quite high in Manhattan significantly indicating the most Luxury AirBnB's are in Manhattan, which once again validates the results we see from the map.
 ```{r}
 # create subset just for aggregating by mean
 airbnb_map <- airbnb[ , c(6, 7, 8, 10)]
