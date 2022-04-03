@@ -488,7 +488,7 @@ Any of these data points may affect user demand for a unit, which could increase
 
 ## 4.3: Next Steps 
 
-Next steps are to use what we have learned about what in our dataset relates to price to construt a linear model.
+Next steps are to use what we have learned about what in our dataset relates to price to construct a linear model.
 
 Despite the limitations with our dataset, there are a few potential next steps we can take with the data we have that may help us in constructing a linear model to describe price. These include:
 
