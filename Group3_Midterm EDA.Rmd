@@ -36,7 +36,7 @@ Results from this investigation can ultimately be shared with Airbnb and hosts t
 
 ## 1.1: Initial Dataset Cleaning 
 
-Before we began analysis, we took a few steps to clean the data. The data was mostly cleaned, but we created a subset for calculating correlation, changed some data to be categorical or numerical depending on the variable, and fixed the dates so that they aren't read in as characters.
+Before we began the analysis, we took a few steps to clean the data. The data was mostly clean, but we created a subset for calculating correlation, changed some data to be categorical or numerical depending on the variable, and fixed the dates so that they aren't read in as characters.
 
 Before making any of our adjustments, our dataset is described as follows:
 
@@ -110,7 +110,7 @@ Our dataset has `r nrow(airbnb)` observations. The continuous variables are desc
 xkablesummary(na.omit(airbnb_cor), title = "Summary Statistics")
 ```
 
-As table above shows a general summary of the statistics behind our dataset. A few things to take away is that the price ranges from 0 USD to 10,000 USD. People stayed spent anywhere from 1 to 1,250 nights in an Airbnb. At the end of the year, each Airbnb had reviews ranges from 0 to 629. Finally hosts listed Airbnb's anywhere from 0 to 327 units. On average Airbnbs in New York City cost 142 USD, and on average people leave reviews once a month.
+The table above shows a general summary of the statistics behind our dataset. A few things to take away are that the price ranges from 0 USD to 10,000 USD, people stayed spent anywhere from 1 to 1,250 nights in an Airbnb, and at the end of the year, each Airbnb had reviews ranges from 0 to 629. Also, hosts listed anywhere from 0 to 327 Airbnb units. On average Airbnbs in New York City cost 142 USD, and on average people leave reviews once a month.
 
 
 ```{r}
