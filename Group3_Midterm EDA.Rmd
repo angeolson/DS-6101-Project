@@ -151,13 +151,13 @@ xkabledply(table(airbnb$room_type), title = "Room Type Counts")
 
 Our SMART questions asks: **Is the price of an Airbnb in the 2010s strongly determined by location and room type, or are there other factors involved?** 
 
-As mentioned before this information can be useful for hosts to understand what consumers prefer and are willing to pay for when looking for an Airbnb in New York City. This is also a great way for the executives of Airbnb to see where they are making the most profits and potentially use to attract more hosts. 
+As mentioned before this information can be useful for hosts to understand what consumers prefer and are willing to pay for when looking for an Airbnb in New York City. This is also a great way for the executives of Airbnb to see where they are making the most profits and potentially use this information to attract more hosts. 
 
 ## 1.4: Overview of Tests and Analysis Conducted 
 
 To complete a through analysis, we used Q-Q plots and histograms to look at the distribution of the `price` variable, boxplots and scatter plots to identify trends between `price` and potential explanatory variables, and geographical maps to identify location popularity and provide insight into price and popularity by neighborhood. 
 
-Correlation was used to test for relationships between `price` and the continuous variables in our dataset, and ANOVA tests were used to test for differences in the value of `price` between our categorical variables. Where our ANOVA tests showed statistically significant differences, we ran Tukey HSD Post-Hoc tets to determine where these differences occurred.
+Correlation was used to test for relationships between `price` and the continuous variables in our dataset, and ANOVA tests were used to test for differences in the value of `price` between our categorical variables. Where our ANOVA tests showed statistically significant differences, we ran Tukey HSD Post-Hoc tests to determine where these differences occurred.
 
 # Section II: Exploratory Data Analysis (Visuals)
 
@@ -190,7 +190,7 @@ qqnorm(airbnb$price, pch = 20, main = "Q-Q Plot for AirBnB Prices (All Observati
 qqline(airbnb$price, col = "black", lwd = 2)
 ```
 
-There appear to be a large number of outliers in the data and if we remove these outliers, 2972 observations are affected, the average price across New York city comes down to 120 USD per night, and the maximum price per night has changed to 334 USD. 
+When we remove the outliers, 2972 observations are affected, decreasing the average price across New York city to 120 USD per night. The maximum price per night has also decreased to 334 USD. 
 
 ```{r, results='markup'}
 airbnb_clean = outlierKD2(airbnb, price, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
@@ -198,7 +198,7 @@ airbnb_clean = outlierKD2(airbnb, price, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
 
 ### 2.1.3: Histogram for Price (Outliers Removed)
 
-The distribution is now normal and below we have included a histogram and Q-Q plot for the clean data to show the changes. However, going further in the analysis, we have decided to keep these outliers in as we do not want to completely ignore the luxury Airbnb market. With enough data, there is an opportunity here to conduct analyses on both the luxury market and the basic market separately.
+The distribution is now normal and we included a histogram and Q-Q plot below for the clean data to show the changes. However, going further in the analysis, we have decided to keep these outliers, since we do not want to completely ignore the luxury Airbnb market. With enough data, there is an opportunity here to conduct analyses on both the luxury market and the basic market separately.
 
 ```{r, results = 'markup'}
 library(ggplot2)
