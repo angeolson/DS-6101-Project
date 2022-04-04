@@ -3,21 +3,16 @@ title: "Midterm Summary Paper"
 author: "Group 3: Pavani Samala, Ange Olson, Kowshik Bezawada, Meghana Gantla"
 date: "`r Sys.Date()`"
 output: 
-   rmdformats::readthedown:
-   #rmdformats::material:
-   #rmdformats::html_clean:
-     highlight: kate
-     code_folding: hide
-#  html_document:
-#    rmdformats::material
-#    code_folding: hide
-#    number_sections: false
-#    toc: yes
-#    toc_depth: 3
-#    toc_float: yes
-#  pdf_document:
-#    toc: yes
-#    toc_depth: '3'
+  html_document:
+    code_folding: hide
+    number_sections: false
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    theme: cosmo
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
 ---
 
 ```{r setup, include=FALSE}
@@ -253,12 +248,13 @@ ggplot(airbnb, aes(price, factor(neighbourhood_group))) +
   labs(title = "Neighborhood Group vs Price Box plot", x = "Price", y = "Neighborhood group") +
   xlim(0, 1000)
 ```
-Average prices per night by Neighborhood group
-* `Manhattan`    : $197
-* `Brooklyn`     : $124
-* `Staten Island`: $115
-* `Queens`       : $99.5
-* `Bronx`        : $87.5
+Average prices per night by Neighborhood group:
+
+*   `Manhattan`     : $197
+*   `Brooklyn`      : $124
+*   `Staten Island` : $115
+*   `Queens`        : $99.5
+*   `Bronx`         : $87.5
 
 ### 2.2.3: Average Price and Number of Listings by Neighborhood
 
@@ -344,10 +340,11 @@ ggplot(airbnb, aes(price, factor(room_type))) +
   labs(title = "Room type vs Price Box plot", x = "Price", y = "Room Type") + xlim(0, 1000)
 ```
 
-Average prices per night by Room type
-* `Entire home/apartment` : $212
-* `Private room        `  : $89.8
-* `Shared room`           : $70.1
+Average prices per night by Room type:
+
+*   `Entire home/apartment` : $212
+*   `Private room`          : $89.8
+*   `Shared room`           : $70.1
 
 From the analysis, it is apparent that the room type has significance in determining the price point of an Airbnb.
 
